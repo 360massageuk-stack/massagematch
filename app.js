@@ -1,5 +1,5 @@
 const toast=document.getElementById("toast");
 function showToast(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2800)}
-document.getElementById("searchForm").addEventListener("submit",e=>{e.preventDefault();showToast("Great — the search interface is ready. Real therapist data comes next.");document.getElementById("find").scrollIntoView({behavior:"smooth"})});
-document.getElementById("demoContinue").addEventListener("click",e=>{e.preventDefault();window.location.href="join.html"});
-document.querySelector(".menu").addEventListener("click",()=>showToast("Mobile navigation is ready for the next build."));
+document.getElementById("searchForm")?.addEventListener("submit",e=>{e.preventDefault();const place=document.getElementById("place").value.trim();const type=document.getElementById("type").value;const gender=document.getElementById("gender").value;const q=new URLSearchParams();if(place)q.set("place",place);if(type!=="Any treatment")q.set("type",type);if(gender!=="any")q.set("therapist",gender);window.location.href="search.html"+(q.toString()?"?"+q.toString():"")});
+document.getElementById("demoContinue")?.addEventListener("click",e=>{e.preventDefault();window.location.href="join.html"});
+document.querySelector(".menu")?.addEventListener("click",()=>showToast("Mobile navigation is ready for the next build."));
