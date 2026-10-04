@@ -11,3 +11,7 @@ Visual polish release built on the approved v0.2 foundation.
 - Preserved Home → Search → Profile journey
 
 Next: therapist onboarding wizard + admin approval prototype.
+
+
+## v0.9
+Adds searchable all-treatments/service directory, broader wellness/beauty categories, homepage searchable treatment field, and corrected Treatments navigation.

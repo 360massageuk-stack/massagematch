@@ -13,7 +13,7 @@
   <button class="menu" aria-label="Open menu">☰</button>
   <nav>
     <a href="search.html">Find a Therapist</a>
-    <a href="#treatments">Treatments</a>
+    <a href="treatments.html">Treatments</a>
     <a href="#about">About</a>
     <a href="pricing.html">For Therapists</a>
     <a href="dashboard.html">Dashboard</a>
@@ -24,14 +24,12 @@
 <main id="home">
 <section class="hero hero-photo">
   <div class="hero-inner">
-    <div class="eyebrow">UK MASSAGE THERAPIST DIRECTORY</div>
-    <h1>Find the right massage.<br><em>Near you.</em></h1>
-    <p>Discover independent massage therapists, explore their treatments and contact them directly.</p>
+    <div class="eyebrow">UK TREATMENT & WELLBEING DIRECTORY</div>
+    <h1>Find the right treatment.<br><em>Near you.</em></h1>
+    <p>Discover independent massage, wellbeing and beauty professionals, explore their services and contact them directly.</p>
     <form class="search" id="searchForm">
       <label><span>Where?</span><input id="place" placeholder="Town, city or postcode"></label>
-      <label><span>Massage type</span>
-        <select id="type"><option>Any treatment</option><option>Sports Massage</option><option>Deep Tissue</option><option>Swedish</option><option>Relaxation</option><option>Thai Massage</option><option>Pregnancy Massage</option></select>
-      </label>
+      <label class="service-picker"><span>Treatment or service</span><input id="type" list="popularServices" placeholder="Search treatments..." autocomplete="off"><datalist id="popularServices"><option value="Sports Massage"><option value="Deep Tissue Massage"><option value="Relaxation Massage"><option value="Swedish Massage"><option value="Pregnancy Massage"><option value="Traditional Thai Massage"><option value="Head Spa"><option value="Reiki"><option value="Gel Nails"><option value="Facial"><option value="Hair Styling"><option value="Counselling"></datalist><small class="picker-help">Start typing, or <a href="treatments.html">view all treatments</a></small></label>
       <label><span>Therapist</span><select id="gender"><option value="any">Any therapist</option><option value="female">Female therapist</option><option value="male">Male therapist</option></select></label>
       <button class="button" type="submit">Find a Therapist</button>
     </form>
@@ -50,7 +48,7 @@
 </section>
 
 <section class="section" id="treatments">
-  <div class="section-head"><div><span class="eyebrow">EXPLORE</span><h2>Popular treatments</h2></div><a href="#find">View all treatments →</a></div>
+  <div class="section-head"><div><span class="eyebrow">EXPLORE</span><h2>Popular treatments</h2><p>A few popular choices — our full directory covers massage, wellbeing, beauty, hair and more.</p></div><a href="treatments.html">Search all treatments →</a></div>
   <div class="treatment-grid">
     <article><div class="icon">🏃</div><h3>Sports Massage</h3><p>Recovery, mobility and performance.</p></article>
     <article><div class="icon">◎</div><h3>Deep Tissue</h3><p>Focused work for muscular tension.</p></article>
@@ -114,7 +112,7 @@
 </section>
 </main>
 
-<footer><a class="brand footerbrand" href="#home"><span class="mark">M</span><span>MassageMatch<small>UK</small></span></a><p>Created in Scotland. Built for therapists across the UK.</p><p class="tiny">© 2026 MassageMatch UK · Prototype v0.8</p></footer>
+<footer><a class="brand footerbrand" href="#home"><span class="mark">M</span><span>MassageMatch<small>UK</small></span></a><p>Created in Scotland. Built for therapists across the UK.</p><p class="tiny">© 2026 MassageMatch UK · Prototype v0.9</p></footer>
 
 <div class="toast" id="toast">Prototype search ready — we'll connect the real database next.</div>
 <script src="app.js"></script>
