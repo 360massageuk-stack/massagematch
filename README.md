@@ -1,12 +1,13 @@
-# MassageMatch UK — Prototype v0.4
+# MassageMatch UK — Prototype v0.3
 
-NEW
-- join.html — four-step therapist profile builder
+Visual polish release built on the approved v0.2 foundation.
 
-UPDATED
-- index.html — List Your Profile links to the builder
-- styles.css — onboarding design
-- app.js — steps, local draft save and profile preview
-- README.md
+- Added locally bundled original massage photography
+- Upgraded homepage hero
+- Replaced coloured therapist placeholders with imagery
+- Upgraded search result photography
+- Upgraded therapist profile gallery
+- Kept all fictional profiles clearly labelled as examples
+- Preserved Home → Search → Profile journey
 
-This remains a front-end prototype: no real account, upload, publication or server submission yet.
+Next: therapist onboarding wizard + admin approval prototype.
