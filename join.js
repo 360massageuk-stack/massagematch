@@ -1,5 +1,4 @@
-const SUPABASE_URL = 'https://zuamkrvmnvlejgrzxaxr.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_xstDQcp-3XNDm6UZgAjC-w_xFo0F-uZ';
+
 
 (() => {
   const form=document.getElementById('therapistBuilder'); if(!form) return;
@@ -47,7 +46,105 @@ const SUPABASE_KEY = 'sb_publishable_xstDQcp-3XNDm6UZgAjC-w_xFo0F-uZ';
     const settings=d.getAll('setting');const area=d.get('areas');const bits=[];if(settings.length)bits.push(settings.join(' · '));if(mobile?.checked&&area)bits.push(`Areas covered: ${area}`);const pvPractice=document.getElementById('pvPractice');pvPractice.textContent=bits.join(' | ');pvPractice.hidden=!bits.length;document.getElementById('pvBadges').innerHTML=settings.map(x=>`<span>${esc(x)}</span>`).join('');
     const phone=d.get('phone'),email=d.get('email'),website=d.get('website');const contacts=[];if(phone)contacts.push(`<span>☎ ${esc(phone)}</span>`);if(email)contacts.push(`<span>✉ ${esc(email)}</span>`);if(website)contacts.push(`<span>↗ ${esc(website)}</span>`);const contact=document.getElementById('pvContact');document.getElementById('pvContactLinks').innerHTML=contacts.join('');contact.hidden=!contacts.length;
   }
-  next.onclick=()=>{if(current<steps.length-1){current++;renderStep()}else{next.disabled=true;next.textContent='Ready for live system';if(!next.parentElement.querySelector('.submit-note')){const msg=document.createElement('div');msg.className='submit-note';msg.textContent='Prototype complete — your profile is ready for the future review system.';next.parentElement.appendChild(msg)}}};
-  back.onclick=()=>{if(current>0){current--;renderStep()}};
-  renderStep();
+ const saveProfile = async () => {
+  const d = new FormData(form);
+
+  next.disabled = true;
+  next.textContent = 'Submitting...';
+
+  try {
+    let { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      const { data: authData, error: authError } =
+        await supabase.auth.signInAnonymously();
+
+      if (authError) throw authError;
+      user = authData.user;
+    }
+
+    const treatments = [...selected.querySelectorAll('[data-name]')]
+      .map(row => ({
+        name: row.dataset.name,
+        durations: [...row.querySelectorAll('.duration-option')]
+          .filter(option =>
+            option.querySelector('.duration-toggle').checked
+          )
+          .map(option => ({
+            minutes: Number(
+              option.querySelector('.duration-toggle').dataset.minutes
+            ),
+            price: Number(
+              option.querySelector('.duration-price').value
+            )
+          }))
+          .filter(option => option.price > 0)
+      }))
+      .filter(treatment => treatment.durations.length);
+
+    const profile = {
+      user_id: user.id,
+      display_name: d.get('displayName'),
+      business_name: d.get('business'),
+      bio: d.get('about'),
+      phone: d.get('phone'),
+      email: d.get('email'),
+      website: d.get('website'),
+      location: [d.get('city'), d.get('postcode')]
+        .filter(Boolean)
+        .join(' · '),
+      areas: d.get('areas'),
+      settings: d.getAll('setting').join(' · '),
+      treatments: treatments,
+      mobile: d.getAll('setting').includes('Mobile visits'),
+      mobile_areas: d.getAll('setting').includes('Mobile visits')
+        ? (d.get('areas') || '')
+        : '',
+      approved: false,
+      featured: false
+    };
+
+    const { error } = await supabase
+      .from('profiles')
+      .insert(profile);
+
+    if (error) throw error;
+
+    next.textContent = 'Submitted for review';
+
+    const msg = document.createElement('div');
+    msg.className = 'submit-note';
+    msg.textContent =
+      'Thank you — your MassageMatch profile has been submitted for review.';
+
+    if (!next.parentElement.querySelector('.submit-note')) {
+      next.parentElement.appendChild(msg);
+    }
+
+  } catch (error) {
+    console.error(error);
+    next.disabled = false;
+    next.textContent = 'Submit for review';
+    alert('Could not submit profile: ' + error.message);
+  }
+};
+
+next.onclick = async () => {
+  if (current < steps.length - 1) {
+    current++;
+    renderStep();
+  } else {
+    await saveProfile();
+  }
+};
+
+back.onclick = () => {
+  if (current > 0) {
+    current--;
+    renderStep();
+  }
+};
+
+renderStep();
+
 })();
