@@ -97,10 +97,10 @@
       settings: d.getAll('setting').join(' · '),
       treatments: treatments,
       mobile: d.getAll('setting').includes('Mobile visits'),
-      mobile_areas: d.getAll('setting').includes('Mobile visits')
-        ? (d.get('areas') || '')
-        : '',
-      approved: false,
+     mobile_areas: d.getAll('setting').includes('Mobile visits')
+  ? (mobileAreas?.value || '')
+  : '',
+    
       featured: false
     };
 
