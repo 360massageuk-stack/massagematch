@@ -3,6 +3,17 @@
   const steps=[...document.querySelectorAll('.build-step')], dots=[...document.querySelectorAll('.step-track span')];
   const next=document.getElementById('nextStep'), back=document.getElementById('backStep'); let current=0;
   const selected=document.getElementById('selectedTreatments');
+  const photoInput=document.getElementById('profilePhotos'), photoGallery=document.getElementById('photoGallery'), photoStatus=document.getElementById('photoStatus');
+  let profilePhotos=[], mainPhotoId=null;
+  const photoUrl=p=>p?.url||null;
+  function renderPhotos(){
+    if(!photoGallery) return;
+    photoGallery.innerHTML='';
+    profilePhotos.forEach(p=>{const card=document.createElement('div');card.className='photo-card'+(p.id===mainPhotoId?' main':'');card.innerHTML=`${p.id===mainPhotoId?'<span class="main-badge">MAIN</span>':''}<img alt="Therapist photo preview"><div class="photo-actions"><button type="button" class="make-main">Make main</button><button type="button" class="remove-photo">Remove</button></div>`;card.querySelector('img').src=p.url;card.querySelector('.make-main').onclick=()=>{mainPhotoId=p.id;renderPhotos();};card.querySelector('.remove-photo').onclick=()=>{URL.revokeObjectURL(p.url);profilePhotos=profilePhotos.filter(x=>x.id!==p.id);if(mainPhotoId===p.id)mainPhotoId=profilePhotos[0]?.id||null;renderPhotos();};photoGallery.appendChild(card)});
+    if(photoStatus) photoStatus.textContent=profilePhotos.length?`${profilePhotos.length} of 5 photos selected. ${profilePhotos.length<5?'You can add '+(5-profilePhotos.length)+' more.':'Maximum reached.'}`:'No photos selected yet.';
+    const main=profilePhotos.find(p=>p.id===mainPhotoId), pv=document.getElementById('pvPhoto');if(pv&&main)pv.style.backgroundImage=`url("${main.url}")`;
+  }
+  photoInput?.addEventListener('change',()=>{const files=[...photoInput.files];const allowed=['image/jpeg','image/png','image/webp'];for(const file of files){if(profilePhotos.length>=5)break;if(!allowed.includes(file.type))continue;if(file.size>10*1024*1024)continue;const item={id:(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random()),url:URL.createObjectURL(file),name:file.name};profilePhotos.push(item);if(!mainPhotoId)mainPhotoId=item.id;}photoInput.value='';renderPhotos();});
   const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const safeSel=s=>window.CSS&&CSS.escape?CSS.escape(s):String(s).replace(/["\\]/g,'\\$&');
   function renderStep(){steps.forEach((x,i)=>x.classList.toggle('active',i===current));dots.forEach((x,i)=>x.classList.toggle('active',i<=current));back.disabled=current===0;next.textContent=current===steps.length-1?'Submit for review':'Continue';if(current===steps.length-1)preview();window.scrollTo({top:0,behavior:'smooth'});}
@@ -26,6 +37,7 @@
   function syncMobile(){if(!mobile||!mobileAreas)return;mobileAreas.hidden=!mobile.checked;}
   mobile?.addEventListener('change',syncMobile);syncMobile();
   function preview(){
+    renderPhotos();
     const d=new FormData(form);document.getElementById('pvName').textContent=d.get('displayName')||d.get('business')||'Your name';document.getElementById('pvPlace').textContent=[d.get('city'),d.get('postcode')].filter(Boolean).join(' · ')||'Your location';document.getElementById('pvAbout').textContent=d.get('about')||'Your introduction will appear here.';
     const rows=[...selected.querySelectorAll('[data-name]')];document.getElementById('pvTreatments').innerHTML=rows.map(r=>`<span>${esc(r.dataset.name)}</span>`).join('');
     const prices=[];const menu=[];rows.forEach(r=>{const opts=[];r.querySelectorAll('.duration-option').forEach(o=>{if(o.querySelector('.duration-toggle').checked){const mins=o.querySelector('.duration-toggle').dataset.minutes;const p=+o.querySelector('.duration-price').value;if(p>0){prices.push(p);opts.push(`${mins} min £${p}`)}}});if(opts.length)menu.push(`<div class="menu-service"><strong>${esc(r.dataset.name)}</strong><span>${opts.join(' · ')}</span></div>`)});document.getElementById('pvPrice').textContent=prices.length?`Treatments from £${Math.min(...prices)}`:'';document.getElementById('pvMenu').innerHTML=menu.length?`<h3>Treatment menu</h3>${menu.join('')}`:'';
