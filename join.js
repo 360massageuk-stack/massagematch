@@ -1,3 +1,6 @@
+const SUPABASE_URL = 'https://zuamkrvmnvlejgrzxaxr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_xstDQcp-3XNDm6UZgAjC-w_xFo0F-uZ';
+
 (() => {
   const form=document.getElementById('therapistBuilder'); if(!form) return;
   const steps=[...document.querySelectorAll('.build-step')], dots=[...document.querySelectorAll('.step-track span')];
