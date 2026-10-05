@@ -48,16 +48,21 @@
   }
  const saveProfile = async () => {
   const d = new FormData(form);
+const sb = window.mmSupabase;
 
+if (!sb) {
+  alert('MassageMatch connection did not load. Please refresh and try again.');
+  return;
+}
   next.disabled = true;
   next.textContent = 'Submitting...';
 
   try {
-    let { data: { user } } = await supabase.auth.getUser();
+    let { data: { user } } = await sb.auth.getUser();
 
     if (!user) {
       const { data: authData, error: authError } =
-        await supabase.auth.signInAnonymously();
+        await sb.auth.signInAnonymously();
 
       if (authError) throw authError;
       user = authData.user;
@@ -104,9 +109,9 @@
       featured: false
     };
 
-    const { error } = await supabase
-      .from('profiles')
-      .insert(profile);
+   const { error } = await sb
+  .from('profiles')
+  .insert(profile);
 
     if (error) throw error;
 
