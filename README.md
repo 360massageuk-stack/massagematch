@@ -1,17 +1,11 @@
-# MassageMatch UK — Prototype v0.3
+# MassageMatch UK — v1.0 preview
 
-Visual polish release built on the approved v0.2 foundation.
+This prototype adds the founding subscription offer throughout the therapist journey.
 
-- Added locally bundled original massage photography
-- Upgraded homepage hero
-- Replaced coloured therapist placeholders with imagery
-- Upgraded search result photography
-- Upgraded therapist profile gallery
-- Kept all fictional profiles clearly labelled as examples
-- Preserved Home → Search → Profile journey
+- First 2 months free on Essential, Professional or Premium.
+- Plan buttons clearly show the free period and monthly price afterwards.
+- Homepage founding offer links directly to membership pricing.
+- Dashboard preview shows the free-until date and the monthly price that follows.
+- Payments remain intentionally disconnected in this prototype.
 
-Next: therapist onboarding wizard + admin approval prototype.
-
-
-## v0.9
-Adds searchable all-treatments/service directory, broader wellness/beauty categories, homepage searchable treatment field, and corrected Treatments navigation.
+Upload all files and the assets folder to the GitHub Pages repository root.
