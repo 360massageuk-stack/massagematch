@@ -131,11 +131,7 @@ subscription_status: 'pending_payment',
   .insert(profile);
 
     if (error) throw error;
-    next.textContent = 'Opening secure checkout...';
 
-setTimeout(() => {
-  window.location.href = checkoutLinks[selectedPlan] || checkoutLinks.basic;
-}, 800);
 
     next.textContent = 'Submitted for review';
 
