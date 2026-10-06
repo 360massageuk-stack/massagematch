@@ -48,6 +48,14 @@
   }
  const saveProfile = async () => {
   const d = new FormData(form);
+   const params = new URLSearchParams(window.location.search);
+const selectedPlan = (params.get('plan') || 'basic').toLowerCase();
+
+const checkoutLinks = {
+  basic: 'https://square.link/u/beCOOvsk',
+  plus: 'https://square.link/u/zF1zJjgs',
+  premium: 'https://square.link/u/Dcj009HP'
+};
 const sb = window.mmSupabase;
 
 if (!sb) {
@@ -105,7 +113,8 @@ if (!sb) {
      mobile_areas: d.getAll('setting').includes('Mobile visits')
   ? (mobileAreas?.value || '')
   : '',
-    
+    plan: selectedPlan,
+subscription_status: 'pending_payment',
       featured: false
     };
 
@@ -114,6 +123,11 @@ if (!sb) {
   .insert(profile);
 
     if (error) throw error;
+    next.textContent = 'Opening secure checkout...';
+
+setTimeout(() => {
+  window.location.href = checkoutLinks[selectedPlan] || checkoutLinks.basic;
+}, 800);
 
     next.textContent = 'Submitted for review';
 
