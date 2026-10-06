@@ -1,6 +1,14 @@
 
 
 (() => {
+  const planParams = new URLSearchParams(window.location.search);
+const validPlans = ['basic', 'plus', 'premium'];
+const incomingPlan = planParams.get('plan');
+
+if (!validPlans.includes(incomingPlan)) {
+  window.location.href = 'pricing.html';
+  return;
+}
   const form=document.getElementById('therapistBuilder'); if(!form) return;
   const steps=[...document.querySelectorAll('.build-step')], dots=[...document.querySelectorAll('.step-track span')];
   const next=document.getElementById('nextStep'), back=document.getElementById('backStep'); let current=0;
