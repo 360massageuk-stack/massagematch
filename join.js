@@ -131,6 +131,23 @@ subscription_status: 'pending_payment',
   .insert(profile);
 
     if (error) throw error;
+    const monthlyPrices = {
+  basic: '£10',
+  plus: '£15',
+  premium: '£20'
+};
+
+const monthlyPrice = monthlyPrices[selectedPlan] || 'your selected monthly price';
+
+const continueToPayment = confirm(
+  `You pay £0 today.\n\nYour first 2 months are free.\n\nAfter that, your membership automatically continues at ${monthlyPrice} per month until cancelled.\n\nContinue to secure checkout?`
+);
+
+if (!continueToPayment) {
+  next.disabled = false;
+  next.textContent = 'Continue to checkout';
+  return;
+}
 
 next.textContent = 'Opening secure checkout...';
 
