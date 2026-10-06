@@ -132,17 +132,18 @@ subscription_status: 'pending_payment',
 
     if (error) throw error;
 
+next.textContent = 'Opening secure checkout...';
 
-    next.textContent = 'Submitted for review';
+const { data: checkout, error: checkoutError } =
+  await sb.functions.invoke('square-subscription-checkout', {
+    body: { plan: selectedPlan }
+  });
 
-    const msg = document.createElement('div');
-    msg.className = 'submit-note';
-    msg.textContent =
-      'Thank you — your MassageMatch profile has been submitted for review.';
+if (checkoutError) throw checkoutError;
+if (!checkout?.url) throw new Error('Square checkout link was not returned.');
 
-    if (!next.parentElement.querySelector('.submit-note')) {
-      next.parentElement.appendChild(msg);
-    }
+window.location.href = checkout.url;
+return;
 
   } catch (error) {
     console.error(error);
