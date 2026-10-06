@@ -153,7 +153,7 @@ next.textContent = 'Opening secure checkout...';
 
 const { data: checkout, error: checkoutError } =
   await sb.functions.invoke('square-subscription-checkout', {
-    body: { plan: selectedPlan }
+    body: { plan: selectedPlan, user_id: user.id }
   });
 
 if (checkoutError) throw checkoutError;
