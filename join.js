@@ -73,7 +73,9 @@ if (!isEdit && !validPlans.includes(incomingPlan)) {
     .from('profiles')
     .select('*')
     .eq('user_id', user.id)
-    .maybeSingle();
+    .order('created_at', { ascending: false })
+.limit(1)
+.maybeSingle();
 
   if (error) {
     console.error(error);
