@@ -12,7 +12,8 @@ if (!isEdit && !validPlans.includes(incomingPlan)) {
 }
   const form=document.getElementById('therapistBuilder'); if(!form) return;
   const steps=[...document.querySelectorAll('.build-step')], dots=[...document.querySelectorAll('.step-track span')];
-  const next=document.getElementById('nextStep'), back=document.getElementById('backStep'); let current=0;
+  const next=document.getElementById('nextStep'), back=document.getElementById('backStep');const requestedStep = parseInt(planParams.get('step') || '1', 10);
+let current = Number.isFinite(requestedStep) ? Math.max(0, Math.min(steps.length - 1, requestedStep - 1)) : 0;
   const selected=document.getElementById('selectedTreatments');
   const photoInput=document.getElementById('profilePhotos'), photoGallery=document.getElementById('photoGallery'), photoStatus=document.getElementById('photoStatus');
   let profilePhotos=[], mainPhotoId=null;
