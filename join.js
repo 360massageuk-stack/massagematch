@@ -276,7 +276,14 @@ return;
     alert('Could not submit profile: ' + error.message);
   }
 };
+back.onclick = (e) => {
+  e.preventDefault();
 
+  if (current > 0) {
+    current--;
+    renderStep();
+  }
+};
 next.onclick = async () => {
   if (steps[current]?.querySelector('input[name="insured"]')) {
     const insured = form.elements.insured?.checked;
