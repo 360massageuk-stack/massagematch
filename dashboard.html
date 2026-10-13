@@ -157,6 +157,9 @@
 <script src="supabase.js"></script>
 <script>
 (async () => {
+  const sb = window.mmSupabase;
+  if (!sb) return;
+
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return;
 
