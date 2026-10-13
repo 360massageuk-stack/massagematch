@@ -278,6 +278,16 @@ return;
 };
 
 next.onclick = async () => {
+  if (current === 2) {
+    const insured = form.elements.insured?.checked;
+    const rules = form.elements.rules?.checked;
+
+    if (!insured || !rules) {
+      alert('Please confirm your professional insurance and agree to the MassageMatch professional service rules before continuing.');
+      return;
+    }
+  }
+
   if (current < steps.length - 1) {
     current++;
     renderStep();
@@ -285,14 +295,6 @@ next.onclick = async () => {
     await saveProfile();
   }
 };
-
-back.onclick = () => {
-  if (current > 0) {
-    current--;
-    renderStep();
-  }
-};
-
 loadEditProfile().then(renderStep);
 
 })();
