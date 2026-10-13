@@ -179,24 +179,23 @@ if (!sb) {
       user = authData.user;
     }
 
-    const treatments = [...selected.querySelectorAll('[data-name]')]
-      .map(row => ({
-        name: row.dataset.name,
-        durations: [...row.querySelectorAll('.duration-option')]
-          .filter(option =>
-            option.querySelector('.duration-toggle').checked
-          )
-          .map(option => ({
-            minutes: Number(
-              option.querySelector('.duration-toggle').dataset.minutes
-            ),
-            price: Number(
-              option.querySelector('.duration-price').value
-            )
-          }))
-          .filter(option => option.price > 0)
+   const treatments = [...selected.querySelectorAll('[data-name]')]
+  .map(row => ({
+    name: row.dataset.name,
+    durations: [...row.querySelectorAll('.duration-option')]
+      .filter(option =>
+        option.querySelector('.duration-toggle').checked
+      )
+      .map(option => ({
+        minutes: Number(
+          option.querySelector('.duration-toggle').dataset.minutes
+        ),
+        price: Number(
+          option.querySelector('.duration-price').value
+        )
       }))
-      .filter(treatment => treatment.durations.length);
+      .filter(option => option.price > 0)
+  }));
 
     const profile = {
       user_id: user.id,
