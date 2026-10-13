@@ -196,7 +196,7 @@ if (!sb) {
       }))
       .filter(option => option.price > 0)
   }));
-    alert(JSON.stringify(treatments));
+
 
     const profile = {
       user_id: user.id,
