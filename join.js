@@ -278,7 +278,7 @@ return;
 };
 
 next.onclick = async () => {
-  if (current === 2) {
+  if (steps[current]?.querySelector('input[name="insured"]')) {
     const insured = form.elements.insured?.checked;
     const rules = form.elements.rules?.checked;
 
