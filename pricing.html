@@ -201,21 +201,92 @@
   </p>
 
 </footer>
-  <script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
 document.querySelectorAll('.plan-btn').forEach(button => {
-  button.addEventListener('click', function(e) {
+
+  button.addEventListener('click', async function(e) {
     e.preventDefault();
 
-    const destination = this.href;
+    const clickedButton = this;
 
-    this.textContent = '✓ Selected';
-    this.style.outline = '3px solid currentColor';
-    this.style.outlineOffset = '3px';
+    const originalUrl = new URL(
+      clickedButton.href,
+      window.location.href
+    );
+
+    const selectedPlan =
+      originalUrl.searchParams.get('plan');
+
+    if (!selectedPlan) {
+      window.location.href = clickedButton.href;
+      return;
+    }
+
+    document.querySelectorAll('.plan-btn').forEach(btn => {
+      btn.style.outline = '';
+      btn.style.outlineOffset = '';
+    });
+
+    clickedButton.textContent = '✓ Selected';
+    clickedButton.style.outline = '3px solid currentColor';
+    clickedButton.style.outlineOffset = '3px';
+
+    let destination =
+      `join.html?plan=${encodeURIComponent(selectedPlan)}`;
+
+    try {
+
+      const sb = window.mmSupabase;
+
+      if (sb) {
+
+        const {
+          data: { user }
+        } = await sb.auth.getUser();
+
+        if (user) {
+
+          const {
+            data: profile,
+            error
+          } = await sb
+            .from('profiles')
+            .select('user_id')
+            .eq('user_id', user.id)
+            .limit(1)
+            .maybeSingle();
+
+          if (!error && profile) {
+
+            destination =
+              `join.html?edit=1&plan=${encodeURIComponent(selectedPlan)}`;
+
+          }
+
+        }
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        'Could not check existing MassageMatch profile:',
+        error
+      );
+
+    }
 
     setTimeout(() => {
       window.location.href = destination;
     }, 500);
+
   });
+
 });
 </script>
 
