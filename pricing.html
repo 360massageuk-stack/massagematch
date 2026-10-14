@@ -201,6 +201,23 @@
   </p>
 
 </footer>
+  <script>
+document.querySelectorAll('.plan-btn').forEach(button => {
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const destination = this.href;
+
+    this.textContent = '✓ Selected';
+    this.style.outline = '3px solid currentColor';
+    this.style.outlineOffset = '3px';
+
+    setTimeout(() => {
+      window.location.href = destination;
+    }, 500);
+  });
+});
+</script>
 
 </body>
 </html>
