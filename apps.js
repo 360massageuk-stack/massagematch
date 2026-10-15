@@ -1,41 +1,780 @@
+<!doctype html>
+<html lang="en">
 
-// v0.4.1 therapist profile builder + treatment menu
-(() => {
- const form=document.getElementById('therapistBuilder'); if(!form) return;
- const steps=[...document.querySelectorAll('.build-step')], dots=[...document.querySelectorAll('.step-track span')];
- const next=document.getElementById('nextStep'), back=document.getElementById('backStep'); let current=0;
- const selectedBox=document.getElementById('selectedTreatments');
- let menu=[];
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
- function renderMenu(){
-   if(!selectedBox) return;
-   if(!menu.length){selectedBox.innerHTML='<div class="empty-menu">No treatments added yet.</div>';return;}
-   selectedBox.innerHTML=menu.map((x,i)=>`<div class="menu-treatment">
-     <div class="menu-treatment-head"><b>${x.name}</b><button type="button" class="remove-treatment" data-remove="${i}">Remove</button></div>
-     <div class="duration-row"><label>Duration<select data-duration="${i}"><option>30 min</option><option selected>60 min</option><option>75 min</option><option>90 min</option><option>120 min</option></select></label><label>Price<input data-price="${i}" placeholder="£55" value="${x.price||''}"></label></div>
-     <button type="button" class="add-duration" data-add-duration="${i}">+ Add another duration / price</button>
-     <div class="extra-durations">${(x.extra||[]).map((d,j)=>`<div class="duration-row extra"><label>Duration<select data-extra-duration="${i}:${j}"><option>30 min</option><option>45 min</option><option selected>60 min</option><option>75 min</option><option>90 min</option><option>120 min</option></select></label><label>Price<input data-extra-price="${i}:${j}" placeholder="£75" value="${d.price||''}"></label><button type="button" data-remove-duration="${i}:${j}">×</button></div>`).join('')}</div>
-   </div>`).join('');
- }
- function addTreatment(name){name=name.trim();if(!name||menu.some(x=>x.name.toLowerCase()===name.toLowerCase()))return;menu.push({name,price:'',extra:[]});renderMenu();save();}
- document.querySelectorAll('[data-treatment]').forEach(b=>b.onclick=()=>addTreatment(b.dataset.treatment));
- const addCustom=document.getElementById('addCustomTreatment'), custom=document.getElementById('customTreatment');
- if(addCustom)addCustom.onclick=()=>{addTreatment(custom.value);custom.value=''};
- const search=document.getElementById('treatmentSearch');
- if(search)search.oninput=()=>{const q=search.value.toLowerCase();document.querySelectorAll('#treatmentLibrary [data-treatment]').forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?'':'none');document.querySelectorAll('#treatmentLibrary section').forEach(s=>s.style.display=[...s.querySelectorAll('[data-treatment]')].some(b=>b.style.display!=='none')?'':'none')};
- if(selectedBox)selectedBox.onclick=e=>{
-   let b=e.target.closest('[data-remove]');if(b){menu.splice(+b.dataset.remove,1);renderMenu();save();return}
-   b=e.target.closest('[data-add-duration]');if(b){menu[+b.dataset.addDuration].extra.push({price:''});renderMenu();save();return}
-   b=e.target.closest('[data-remove-duration]');if(b){let[i,j]=b.dataset.removeDuration.split(':').map(Number);menu[i].extra.splice(j,1);renderMenu();save()}
- };
- if(selectedBox)selectedBox.oninput=e=>{
-   if(e.target.dataset.price!==undefined)menu[+e.target.dataset.price].price=e.target.value;
-   if(e.target.dataset.extraPrice){let[i,j]=e.target.dataset.extraPrice.split(':').map(Number);menu[i].extra[j].price=e.target.value}
-   save();
- };
- function preview(){const d=new FormData(form);pvName.textContent=d.get('displayName')||d.get('business')||'Your name';pvPlace.textContent=[d.get('city'),d.get('postcode')].filter(Boolean).join(' · ')||'Your location';pvAbout.textContent=d.get('about')||'Your introduction will appear here.';pvTreatments.innerHTML=menu.slice(0,8).map(x=>`<span>${x.name}</span>`).join('');pvPrice.textContent=menu.length?`${menu.length} treatment${menu.length===1?'':'s'} listed`:''}
- function show(){steps.forEach((x,i)=>x.classList.toggle('active',i===current));dots.forEach((x,i)=>x.classList.toggle('active',i<=current));back.disabled=current===0;next.textContent=current===steps.length-1?'Submit for review':'Continue';if(current===3)preview()}
- function save(){const o={};new FormData(form).forEach((v,k)=>o[k]=o[k]?[].concat(o[k],v):v);o.treatmentMenu=menu;localStorage.setItem('mmBuilderDraft',JSON.stringify(o))}
- next.onclick=()=>{save();if(current<steps.length-1){current++;show()}else alert('Prototype complete! In the live version this would send the profile to your MassageMatch admin review queue. Nothing has been published.')};
- back.onclick=()=>{if(current){current--;show()}};form.addEventListener('input',save);renderMenu();show();
-})();
+  <title>MassageMatch UK — Find Massage, Wellbeing & Beauty Professionals</title>
+
+  <meta
+    name="description"
+    content="Discover independent massage, wellbeing and beauty professionals across the UK. Search by location and treatment, explore profiles and contact therapists directly."
+  >
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+  <a class="brand" href="#home">
+    <span class="mark">M</span>
+    <span>MassageMatch<small>UK</small></span>
+  </a>
+
+  <button
+    class="menu"
+    id="menuButton"
+    type="button"
+    aria-label="Open menu"
+    aria-expanded="false"
+  >
+    ☰
+  </button>
+
+  <nav id="mainNav">
+
+    <a href="search.html">
+      Find a Therapist
+    </a>
+
+    <a href="treatments.html">
+      Treatments
+    </a>
+
+    <a href="#about">
+      About
+    </a>
+
+    <a href="pricing.html">
+      For Therapists
+    </a>
+
+    <a href="dashboard.html">
+      Dashboard
+    </a>
+
+    <a
+      class="button small"
+      href="pricing.html"
+    >
+      List Your Profile
+    </a>
+
+  </nav>
+
+</header>
+
+
+
+<main id="home">
+
+
+<section class="hero hero-photo">
+
+  <div class="hero-inner">
+
+    <div class="eyebrow">
+      UK TREATMENT &amp; WELLBEING DIRECTORY
+    </div>
+
+
+    <h1>
+      Find the right treatment.
+      <br>
+      <em>Near you.</em>
+    </h1>
+
+
+    <p>
+      Discover independent massage, wellbeing and beauty professionals,
+      explore their services and contact them directly.
+    </p>
+
+
+    <form
+      class="search"
+      id="searchForm"
+    >
+
+      <label>
+
+        <span>Where?</span>
+
+        <input
+          id="place"
+          type="search"
+          placeholder="Town, city or postcode"
+          autocomplete="off"
+        >
+
+      </label>
+
+
+      <label class="service-picker">
+
+        <span>Treatment or service</span>
+
+        <input
+          id="type"
+          type="search"
+          list="popularServices"
+          placeholder="Search treatments..."
+          autocomplete="off"
+        >
+
+
+        <datalist id="popularServices">
+
+          <option value="Sports Massage">
+          <option value="Deep Tissue Massage">
+          <option value="Relaxation Massage">
+          <option value="Swedish Massage">
+          <option value="Pregnancy Massage">
+          <option value="Traditional Thai Massage">
+          <option value="Head Spa">
+          <option value="Reiki">
+          <option value="Gel Nails">
+          <option value="Facial">
+          <option value="Hair Styling">
+          <option value="Counselling">
+
+        </datalist>
+
+
+        <small class="picker-help">
+
+          Start typing, or
+
+          <a href="treatments.html">
+            view all treatments
+          </a>
+
+        </small>
+
+      </label>
+
+
+      <button
+        class="button"
+        type="submit"
+      >
+        Find a Therapist
+      </button>
+
+    </form>
+
+
+    <div class="trust">
+
+      <span>
+        ✓ Professional profiles
+      </span>
+
+      <span>
+        ✓ Contact therapists directly
+      </span>
+
+      <span>
+        ✓ No customer booking fees
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section
+  class="section needs-section"
+  id="needs"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <span class="eyebrow">
+        NOT SURE WHAT TO BOOK?
+      </span>
+
+      <h2>
+        What would you like help with?
+      </h2>
+
+      <p>
+        Start with how you want to feel and explore
+        treatments that may suit what you need.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="needs-grid">
+
+    <a href="search.html?treatment=Deep%20Tissue%20Massage">
+
+      <span>◎</span>
+
+      <b>
+        Back &amp; shoulder tension
+      </b>
+
+      <small>
+        Explore therapists offering focused treatments.
+      </small>
+
+    </a>
+
+
+    <a href="search.html?treatment=Sports%20Massage">
+
+      <span>🏃</span>
+
+      <b>
+        Sports recovery
+      </b>
+
+      <small>
+        For training, recovery and mobility.
+      </small>
+
+    </a>
+
+
+    <a href="search.html?treatment=Relaxation%20Massage">
+
+      <span>🌿</span>
+
+      <b>
+        Relax &amp; unwind
+      </b>
+
+      <small>
+        Explore calming and restorative treatments.
+      </small>
+
+    </a>
+
+
+    <a href="search.html?treatment=Sports%20Massage">
+
+      <span>↗</span>
+
+      <b>
+        Flexibility &amp; mobility
+      </b>
+
+      <small>
+        Explore movement-focused treatments.
+      </small>
+
+    </a>
+
+  </div>
+
+</section>
+
+
+
+<section
+  class="section"
+  id="treatments"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <span class="eyebrow">
+        EXPLORE
+      </span>
+
+      <h2>
+        Popular treatments
+      </h2>
+
+      <p>
+        A few popular choices — our full directory covers massage,
+        wellbeing, beauty, hair and more.
+      </p>
+
+    </div>
+
+
+    <a href="treatments.html">
+      Search all treatments →
+    </a>
+
+  </div>
+
+
+  <div class="treatment-grid">
+
+    <article>
+
+      <div class="icon">
+        🏃
+      </div>
+
+      <h3>
+        Sports Massage
+      </h3>
+
+      <p>
+        Recovery, mobility and performance.
+      </p>
+
+    </article>
+
+
+    <article>
+
+      <div class="icon">
+        ◎
+      </div>
+
+      <h3>
+        Deep Tissue
+      </h3>
+
+      <p>
+        Focused work for muscular tension.
+      </p>
+
+    </article>
+
+
+    <article>
+
+      <div class="icon">
+        🌿
+      </div>
+
+      <h3>
+        Relaxation
+      </h3>
+
+      <p>
+        Slow down, reset and unwind.
+      </p>
+
+    </article>
+
+
+    <article>
+
+      <div class="icon">
+        ♨
+      </div>
+
+      <h3>
+        Swedish Massage
+      </h3>
+
+      <p>
+        A classic full-body treatment.
+      </p>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+
+<section
+  class="section soft"
+  id="find"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <span class="eyebrow">
+        DISCOVER
+      </span>
+
+      <h2>
+        Find professionals near you
+      </h2>
+
+      <p>
+        Search real MassageMatch profiles by location,
+        treatment or service.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div style="text-align:center">
+
+    <a
+      class="button"
+      href="search.html"
+    >
+      Browse live profiles
+    </a>
+
+  </div>
+
+</section>
+
+
+
+<section class="section how">
+
+  <span class="eyebrow">
+    SIMPLE BY DESIGN
+  </span>
+
+  <h2>
+    Finding the right professional shouldn't be complicated.
+  </h2>
+
+
+  <div class="steps">
+
+    <div>
+
+      <b>1</b>
+
+      <h3>
+        Search your area
+      </h3>
+
+      <p>
+        Enter your town, city or postcode.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <b>2</b>
+
+      <h3>
+        Compare profiles
+      </h3>
+
+      <p>
+        See treatments, prices and professional details.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <b>3</b>
+
+      <h3>
+        Choose your therapist
+      </h3>
+
+      <p>
+        Find someone who suits what you need.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <b>4</b>
+
+      <h3>
+        Contact directly
+      </h3>
+
+      <p>
+        No unnecessary middleman.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section
+  class="founder"
+  id="about"
+>
+
+  <div>
+
+    <span class="eyebrow light">
+      WHY MASSAGEMATCH?
+    </span>
+
+    <h2>
+      Created by a therapist.
+      <br>
+      Built for therapists.
+    </h2>
+
+  </div>
+
+
+  <div class="story">
+
+    <p>
+      MassageMatch was created in Scotland by a massage therapist
+      who understood first-hand how frustrating advertising a
+      legitimate massage business could be.
+    </p>
+
+    <p>
+      General classified platforms weren't designed around our
+      profession. Advertising can be expensive, rules can be
+      confusing, and legitimate listings can sometimes disappear
+      without it being clear what needs to change.
+    </p>
+
+    <p>
+      MassageMatch is new, and every great directory has to start
+      somewhere. We are not pretending there are thousands of
+      professionals here already. We are building this properly,
+      one independent therapist and one genuine profile at a time.
+    </p>
+
+    <p>
+      By joining early, you are not just supporting a new UK
+      platform. You are helping shape a directory designed to help
+      independent professionals get discovered without unnecessary
+      commission or inflated advertising costs.
+    </p>
+
+    <p>
+      Our first members will be recognised as
+      <strong>Founding Therapists</strong>.
+      Thank you for taking a chance on something new and helping
+      us build something that can, in turn, help your business grow.
+    </p>
+
+    <p>
+      Fair pricing. Clear rules. A human approach.
+    </p>
+
+    <strong>
+      — Founder, MassageMatch UK
+    </strong>
+
+  </div>
+
+</section>
+
+
+
+<section
+  class="join"
+  id="join"
+>
+
+  <div>
+
+    <span class="eyebrow">
+      FOR THERAPISTS
+    </span>
+
+    <h2>
+      Your work deserves a proper profile.
+    </h2>
+
+    <p>
+      We're inviting founding therapists to join MassageMatch UK.
+      Build your profile, add treatments, prices and photos,
+      and make it easier for local clients to discover you.
+    </p>
+
+
+    <a
+      class="offer offer-link"
+      href="pricing.html"
+    >
+
+      FOUNDING OFFER
+
+      <strong>
+        Join free for 2 months →
+      </strong>
+
+      <small>
+        Choose your plan now. Monthly membership starts
+        after your free period.
+      </small>
+
+    </a>
+
+  </div>
+
+
+  <div class="builder">
+
+    <span class="eyebrow">
+      SIMPLE MEMBERSHIP
+    </span>
+
+    <h3>
+      Build your full professional profile.
+    </h3>
+
+    <p>
+      Add your treatments, individual prices, working locations,
+      contact details and profile information.
+    </p>
+
+    <p>
+      No commission on treatments and no complicated booking system.
+    </p>
+
+    <a
+      class="button wide"
+      href="pricing.html"
+    >
+      View membership options
+    </a>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+
+<footer>
+
+  <a
+    class="brand footerbrand"
+    href="#home"
+  >
+
+    <span class="mark">
+      M
+    </span>
+
+    <span>
+      MassageMatch<small>UK</small>
+    </span>
+
+  </a>
+
+
+  <p>
+    Created in Scotland. Built for therapists across the UK.
+  </p>
+
+
+  <p class="tiny">
+    © 2026 MassageMatch UK
+  </p>
+
+</footer>
+
+
+
+<script>
+
+const menuButton =
+  document.getElementById('menuButton');
+
+const mainNav =
+  document.getElementById('mainNav');
+
+
+menuButton?.addEventListener(
+  'click',
+  () => {
+
+    const open =
+      mainNav.classList.toggle('open');
+
+    menuButton.setAttribute(
+      'aria-expanded',
+      String(open)
+    );
+
+  }
+);
+
+
+
+document
+  .getElementById('searchForm')
+  ?.addEventListener(
+    'submit',
+    event => {
+
+      event.preventDefault();
+
+
+      const place =
+        document
+          .getElementById('place')
+          .value
+          .trim();
+
+
+      const treatment =
+        document
+          .getElementById('type')
+          .value
+          .trim();
+
+
+      const params =
+        new URLSearchParams();
+
+
+      if (place) {
+        params.set(
+          'area',
+          place
+        );
+      }
+
+
+      if (treatment) {
+        params.set(
+          'treatment',
+          treatment
+        );
+      }
+
+
+      const query =
+        params.toString();
+
+
+      window.location.href =
+        query
+          ? `search.html?${query}`
+          : 'search.html';
+
+    }
+  );
+
+</script>
+
+
+</body>
+
+</html>
