@@ -1,11 +1,757 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sarah M. — MassageMatch UK</title><link rel="stylesheet" href="styles.css"></head><body>
-<header class="topbar"><a class="brand" href="index.html"><span class="mark">M</span><span>MassageMatch<small>UK</small></span></a><nav><a href="search.html">Find a Therapist</a><a href="treatments.html">Treatments</a><a href="index.html#about">About</a><a href="index.html#login">Log in</a><a class="button small" href="join.html">List Your Profile</a></nav></header>
-<div class="preview-banner">PREVIEW PROFILE — fictional details used for development</div>
-<main class="profile-page"><a class="back" href="search.html">← Back to search results</a>
-<section class="profile-hero"><div class="profile-gallery"><div class="gallery-main"></div><div class="gallery-small g1"></div><div class="gallery-small g2"></div></div>
-<div class="profile-intro"><div class="verified">✓ Profile reviewed</div><h1>Sarah M.</h1><p class="profile-location">Edinburgh · Studio & mobile appointments</p><div class="tags"><span>Sports Massage</span><span>Deep Tissue</span><span>Swedish</span></div><p class="lead">Professional massage tailored around how you feel, how you move and what you want from your treatment.</p><div class="contact-box"><div><small>Treatments from</small><strong>£45</strong></div><a class="button" href="#contact">Contact Sarah</a></div></div></section>
-<div class="profile-columns"><section class="profile-content"><h2>About me</h2><p>Hi, I'm Sarah. I offer massage treatments in Edinburgh with a focus on creating a comfortable, professional and welcoming experience. Whether you're training hard, dealing with muscular tension or simply need time to unwind, we'll tailor the treatment around you.</p>
-<h2>Treatments & prices</h2><div class="price-list"><div><span><b>Sports Massage</b><small>Targeted recovery and mobility work</small></span><strong>60 min · £50</strong></div><div><span><b>Deep Tissue Massage</b><small>Focused treatment for muscular tension</small></span><strong>60 min · £50</strong></div><div><span><b>Swedish Massage</b><small>Relaxing full-body massage</small></span><strong>60 min · £45</strong></div></div>
-<h2>Where I work</h2><div class="location-box"><b>Edinburgh</b><p>Studio appointments and selected mobile appointments across the local area.</p><small>Exact address is provided when an appointment is arranged.</small></div></section>
-<aside class="profile-side" id="contact"><div class="side-card"><h3>Contact Sarah</h3><p>Contact the therapist directly to ask about availability or arrange an appointment.</p><button class="button wide" onclick="alert('Preview only — direct contact will be enabled for real profiles.')">Send a message</button><button class="outline wide" onclick="alert('Preview only — phone/contact preferences will be controlled by the therapist.')">Show contact options</button><small>MassageMatch does not take commission from your treatment.</small></div><div class="side-card safety"><h3>Profile information</h3><p>✓ Profile reviewed by MassageMatch</p><p>✓ Therapist controls contact preferences</p><p>✓ Direct client-to-therapist contact</p></div></aside></div></main>
-<footer><a class="brand footerbrand" href="index.html"><span class="mark">M</span><span>MassageMatch<small>UK</small></span></a><p>Created in Scotland. Built for therapists across the UK.</p><p class="tiny">Prototype v0.3</p></footer></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Therapist Profile — MassageMatch UK</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .live-profile-placeholder{
+      min-height:520px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      background:linear-gradient(135deg,#e8f1ee,#f5f0e8);
+      border-radius:14px;
+      padding:30px;
+      color:#173c3d;
+    }
+
+    .live-profile-placeholder strong{
+      display:block;
+      font-family:Georgia,serif;
+      font-size:34px;
+      font-weight:500;
+      margin-bottom:8px;
+    }
+
+    .profile-loading{
+      max-width:900px;
+      margin:70px auto;
+      padding:30px;
+      text-align:center;
+    }
+
+    .real-contact-links{
+      display:grid;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .real-contact-links a{
+      display:block;
+      padding:12px 14px;
+      border:1px solid #dce6e2;
+      border-radius:9px;
+      background:#fff;
+      overflow-wrap:anywhere;
+    }
+  </style>
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+  <a class="brand" href="index.html">
+    <span class="mark">M</span>
+    <span>MassageMatch<small>UK</small></span>
+  </a>
+
+  <nav>
+    <a href="search.html">Find a Therapist</a>
+    <a href="treatments.html">Treatments</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#login">Log in</a>
+    <a class="button small" href="join.html">List Your Profile</a>
+  </nav>
+
+</header>
+
+
+<div class="preview-banner">
+  MASSAGEMATCH THERAPIST PROFILE
+</div>
+
+
+<div
+  id="loadingProfile"
+  class="profile-loading"
+>
+  Loading therapist profile...
+</div>
+
+
+<main
+  class="profile-page"
+  id="profilePage"
+  hidden
+>
+
+  <a
+    class="back"
+    href="search.html"
+  >
+    ← Back to search results
+  </a>
+
+
+  <section class="profile-hero">
+
+
+    <div class="profile-gallery">
+
+      <div class="live-profile-placeholder">
+
+        <div>
+          <strong id="photoName">
+            Therapist
+          </strong>
+
+          <span>
+            MassageMatch UK
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="profile-intro">
+
+      <div class="verified">
+        ✓ MassageMatch profile
+      </div>
+
+      <h1 id="profileName">
+        Therapist
+      </h1>
+
+      <p
+        class="profile-location"
+        id="profileLocation"
+      >
+        Location
+      </p>
+
+
+      <div
+        class="tags"
+        id="profileTags"
+      ></div>
+
+
+      <p
+        class="lead"
+        id="profileLead"
+      >
+        Therapist profile
+      </p>
+
+
+      <div class="contact-box">
+
+        <div>
+
+          <small>
+            Treatments from
+          </small>
+
+          <strong id="profileFromPrice">
+            View prices
+          </strong>
+
+        </div>
+
+
+        <a
+          class="button"
+          href="#contact"
+          id="contactButton"
+        >
+          Contact therapist
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <div class="profile-columns">
+
+
+    <section class="profile-content">
+
+      <h2>About me</h2>
+
+      <p id="profileAbout">
+        Profile information.
+      </p>
+
+
+
+      <h2>Treatments &amp; prices</h2>
+
+      <div
+        class="price-list"
+        id="profilePrices"
+      ></div>
+
+
+
+      <h2>Where I work</h2>
+
+      <div class="location-box">
+
+        <b id="workLocation">
+          Location
+        </b>
+
+        <p id="workDetails">
+          Working location information.
+        </p>
+
+        <small>
+          Contact the therapist directly for exact appointment details.
+        </small>
+
+      </div>
+
+    </section>
+
+
+
+    <aside
+      class="profile-side"
+      id="contact"
+    >
+
+
+      <div class="side-card">
+
+        <h3 id="contactHeading">
+          Contact therapist
+        </h3>
+
+        <p>
+          Contact the therapist directly to ask about availability
+          or arrange an appointment.
+        </p>
+
+
+        <div
+          class="real-contact-links"
+          id="contactLinks"
+        ></div>
+
+
+        <small>
+          MassageMatch does not take commission from your treatment.
+        </small>
+
+      </div>
+
+
+
+      <div class="side-card safety">
+
+        <h3>Profile information</h3>
+
+        <p>
+          ✓ Therapist controls their profile
+        </p>
+
+        <p>
+          ✓ Therapist controls contact details
+        </p>
+
+        <p>
+          ✓ Direct client-to-therapist contact
+        </p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</main>
+
+
+
+<footer>
+
+  <a
+    class="brand footerbrand"
+    href="index.html"
+  >
+    <span class="mark">M</span>
+
+    <span>
+      MassageMatch<small>UK</small>
+    </span>
+  </a>
+
+
+  <p>
+    Created in Scotland. Built for therapists across the UK.
+  </p>
+
+
+  <p class="tiny">
+    © 2026 MassageMatch UK
+  </p>
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+
+(async () => {
+
+  const sb = window.mmSupabase;
+
+  const loading =
+    document.getElementById('loadingProfile');
+
+  const profilePage =
+    document.getElementById('profilePage');
+
+
+  function escapeHtml(value) {
+
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+  }
+
+
+  function lowestPrice(treatments) {
+
+    const prices = [];
+
+    (treatments || []).forEach(treatment => {
+
+      (treatment.durations || []).forEach(duration => {
+
+        const price =
+          Number(duration.price);
+
+        if (
+          Number.isFinite(price) &&
+          price > 0
+        ) {
+          prices.push(price);
+        }
+
+      });
+
+    });
+
+    return prices.length
+      ? Math.min(...prices)
+      : null;
+
+  }
+
+
+  function safeWebsite(value) {
+
+    const website =
+      String(value || '').trim();
+
+    if (!website) {
+      return '';
+    }
+
+    if (
+      website.startsWith('http://') ||
+      website.startsWith('https://')
+    ) {
+      return website;
+    }
+
+    return 'https://' + website;
+
+  }
+
+
+
+  if (!sb) {
+
+    loading.innerHTML =
+      '<h2>Could not load profile</h2><p>Please return to the therapist search and try again.</p>';
+
+    return;
+
+  }
+
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const userId =
+    params.get('user');
+
+
+  if (!userId) {
+
+    loading.innerHTML =
+      '<h2>Therapist not found</h2><p>Please return to the search results and choose a therapist.</p>';
+
+    return;
+
+  }
+
+
+
+  const {
+    data: profile,
+    error
+  } = await sb
+    .from('profiles')
+    .select(`
+      user_id,
+      display_name,
+      business_name,
+      bio,
+      phone,
+      email,
+      website,
+      location,
+      areas,
+      settings,
+      mobile,
+      mobile_areas,
+      treatments,
+      plan,
+      subscription_status,
+      created_at
+    `)
+    .eq(
+      'user_id',
+      userId
+    )
+    .order(
+      'created_at',
+      { ascending:false }
+    )
+    .limit(1)
+    .maybeSingle();
+
+
+
+  if (error) {
+
+    console.error(error);
+
+    loading.innerHTML =
+      '<h2>Could not load profile</h2><p>Please return to the therapist search and try again.</p>';
+
+    return;
+
+  }
+
+
+
+  if (!profile) {
+
+    loading.innerHTML =
+      '<h2>Therapist not found</h2><p>This profile may no longer be available.</p>';
+
+    return;
+
+  }
+
+
+
+  const name =
+    profile.display_name ||
+    profile.business_name ||
+    'MassageMatch therapist';
+
+
+  const businessName =
+    profile.business_name || '';
+
+
+  const treatments =
+    Array.isArray(profile.treatments)
+      ? profile.treatments
+      : [];
+
+
+  const location =
+    profile.location ||
+    profile.areas ||
+    'Location available from therapist';
+
+
+  const about =
+    profile.bio ||
+    'Contact this therapist directly for more information about their services.';
+
+
+  document.title =
+    `${name} — MassageMatch UK`;
+
+
+  document.getElementById(
+    'profileName'
+  ).textContent =
+    name;
+
+
+  document.getElementById(
+    'photoName'
+  ).textContent =
+    businessName || name;
+
+
+  document.getElementById(
+    'profileLocation'
+  ).textContent =
+    location;
+
+
+  document.getElementById(
+    'profileLead'
+  ).textContent =
+    businessName
+      ? businessName
+      : 'View treatments, prices and contact information below.';
+
+
+  document.getElementById(
+    'profileAbout'
+  ).textContent =
+    about;
+
+
+  document.getElementById(
+    'workLocation'
+  ).textContent =
+    location;
+
+
+  const workBits = [];
+
+  if (profile.settings) {
+    workBits.push(profile.settings);
+  }
+
+  if (profile.mobile_areas) {
+    workBits.push(
+      `Areas covered: ${profile.mobile_areas}`
+    );
+  }
+  else if (profile.areas) {
+    workBits.push(
+      `Areas covered: ${profile.areas}`
+    );
+  }
+
+
+  document.getElementById(
+    'workDetails'
+  ).textContent =
+    workBits.length
+      ? workBits.join(' · ')
+      : 'Contact the therapist for working location details.';
+
+
+
+  document.getElementById(
+    'profileTags'
+  ).innerHTML =
+    treatments
+      .slice(0, 8)
+      .map(treatment =>
+        `<span>${escapeHtml(treatment.name)}</span>`
+      )
+      .join('');
+
+
+
+  const price =
+    lowestPrice(treatments);
+
+
+  document.getElementById(
+    'profileFromPrice'
+  ).textContent =
+    price !== null
+      ? `£${price}`
+      : 'View prices';
+
+
+
+  const priceList =
+    document.getElementById(
+      'profilePrices'
+    );
+
+
+  if (!treatments.length) {
+
+    priceList.innerHTML =
+      '<p>No treatment prices have been added yet.</p>';
+
+  }
+  else {
+
+    priceList.innerHTML =
+      treatments
+        .map(treatment => {
+
+          const durations =
+            Array.isArray(treatment.durations)
+              ? treatment.durations
+              : [];
+
+
+          const durationText =
+            durations
+              .filter(item =>
+                Number(item.price) > 0
+              )
+              .map(item =>
+                `${escapeHtml(item.minutes)} min · £${escapeHtml(item.price)}`
+              )
+              .join(' &nbsp; · &nbsp; ');
+
+
+          return `
+
+            <div>
+
+              <span>
+
+                <b>
+                  ${escapeHtml(treatment.name)}
+                </b>
+
+              </span>
+
+              <strong>
+                ${durationText || 'Contact for price'}
+              </strong>
+
+            </div>
+
+          `;
+
+        })
+        .join('');
+
+  }
+
+
+
+  const contactLinks =
+    document.getElementById(
+      'contactLinks'
+    );
+
+
+  const contacts = [];
+
+
+  if (profile.phone) {
+
+    const phone =
+      String(profile.phone)
+        .replace(/[^\d+]/g,'');
+
+    contacts.push(`
+      <a href="tel:${escapeHtml(phone)}">
+        ☎ ${escapeHtml(profile.phone)}
+      </a>
+    `);
+
+  }
+
+
+  if (profile.email) {
+
+    contacts.push(`
+      <a href="mailto:${escapeHtml(profile.email)}">
+        ✉ ${escapeHtml(profile.email)}
+      </a>
+    `);
+
+  }
+
+
+  if (profile.website) {
+
+    const website =
+      safeWebsite(profile.website);
+
+    contacts.push(`
+      <a
+        href="${escapeHtml(website)}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ↗ ${escapeHtml(profile.website)}
+      </a>
+    `);
+
+  }
+
+
+  contactLinks.innerHTML =
+    contacts.length
+      ? contacts.join('')
+      : '<p>Contact details have not been made available.</p>';
+
+
+
+  document.getElementById(
+    'contactHeading'
+  ).textContent =
+    `Contact ${name}`;
+
+
+  document.getElementById(
+    'contactButton'
+  ).textContent =
+    `Contact ${name.split(' ')[0]}`;
+
+
+  loading.hidden = true;
+  profilePage.hidden = false;
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
