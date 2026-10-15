@@ -23,8 +23,8 @@
     <a href="search.html">Find a Therapist</a>
     <a href="treatments.html">Treatments</a>
     <a href="index.html#about">About</a>
-    <a href="index.html#login">Log in</a>
-    <a class="button small" href="join.html">List Your Profile</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a class="button small" href="pricing.html">List Your Profile</a>
   </nav>
 
 </header>
@@ -57,6 +57,7 @@
   >
 
     <label>
+
       <span>Where?</span>
 
       <input
@@ -65,10 +66,12 @@
         placeholder="Town, city or postcode"
         autocomplete="off"
       >
+
     </label>
 
 
     <label>
+
       <span>Treatment</span>
 
       <input
@@ -77,6 +80,7 @@
         placeholder="Sports, Hair Styling, Reiki..."
         autocomplete="off"
       >
+
     </label>
 
 
@@ -334,6 +338,7 @@ const priceFilter =
 const sortResults =
   document.getElementById('sortResults');
 
+
 let allProfiles = [];
 
 
@@ -408,6 +413,7 @@ function lowestPrice(profile) {
 
   });
 
+
   return prices.length
     ? Math.min(...prices)
     : null;
@@ -475,32 +481,43 @@ function matchesWork(profile, filter) {
     return true;
   }
 
+
   const workText = clean(
     [
       profile.settings,
       profile.areas,
       profile.mobile_areas,
       profile.mobile ? 'mobile visits' : ''
-    ].filter(Boolean).join(' ')
+    ]
+    .filter(Boolean)
+    .join(' ')
   );
+
 
   if (filter === 'mobile') {
     return workText.includes('mobile');
   }
 
+
   if (filter === 'home') {
+
     return (
       workText.includes('home') ||
       workText.includes('studio')
     );
+
   }
 
+
   if (filter === 'treatment') {
+
     return (
       workText.includes('treatment') ||
       workText.includes('clinic')
     );
+
   }
+
 
   return true;
 
@@ -514,13 +531,17 @@ function matchesArea(profile, area) {
     return true;
   }
 
+
   const profileArea = clean(
     [
       profile.location,
       profile.areas,
       profile.mobile_areas
-    ].filter(Boolean).join(' ')
+    ]
+    .filter(Boolean)
+    .join(' ')
   );
+
 
   return profileArea.includes(area);
 
@@ -534,8 +555,10 @@ function matchesTreatment(profile, treatment) {
     return true;
   }
 
+
   const names =
     treatmentNames(profile).join(' ');
+
 
   return names.includes(treatment);
 
@@ -547,6 +570,7 @@ function renderProfiles(profiles) {
 
   resultsContainer.innerHTML = '';
 
+
   if (!profiles.length) {
 
     resultCount.textContent =
@@ -555,9 +579,12 @@ function renderProfiles(profiles) {
     noResults.hidden = false;
 
     return;
+
   }
 
+
   noResults.hidden = true;
+
 
   resultCount.textContent =
     profiles.length === 1
@@ -569,6 +596,7 @@ function renderProfiles(profiles) {
 
     const article =
       document.createElement('article');
+
 
     article.className =
       'result-card';
@@ -685,17 +713,21 @@ function applySearch() {
   const area =
     clean(whereSearch.value);
 
+
   const treatment =
     clean(
       filterTreatment.value ||
       treatmentSearch.value
     );
 
+
   const work =
     clean(workSetting.value);
 
+
   const duration =
     clean(durationFilter.value);
+
 
   const priceFilterValue =
     clean(priceFilter.value);
@@ -706,6 +738,7 @@ function applySearch() {
 
       const price =
         lowestPrice(profile);
+
 
       return (
         matchesArea(profile, area) &&
@@ -725,8 +758,10 @@ function applySearch() {
       const priceA =
         lowestPrice(a);
 
+
       const priceB =
         lowestPrice(b);
+
 
       return (
         (priceA ?? 999999) -
@@ -758,10 +793,13 @@ async function loadProfiles() {
     resultCount.textContent =
       'Could not load therapists';
 
+
     resultMessage.textContent =
       'MassageMatch connection did not load.';
 
+
     return;
+
   }
 
 
@@ -795,21 +833,25 @@ async function loadProfiles() {
 
     console.error(error);
 
+
     resultCount.textContent =
       'Could not load therapists';
+
 
     resultMessage.textContent =
       error.message;
 
+
     return;
+
   }
 
 
   /*
     Keep only the newest profile row for each user.
 
-    This prevents old test/duplicate rows appearing
-    more than once in search.
+    This prevents old duplicate/test rows for one account
+    appearing more than once.
   */
 
   const seenUsers =
@@ -823,11 +865,14 @@ async function loadProfiles() {
         return false;
       }
 
+
       if (seenUsers.has(profile.user_id)) {
         return false;
       }
 
+
       seenUsers.add(profile.user_id);
+
 
       return true;
 
@@ -844,6 +889,47 @@ async function loadProfiles() {
 
 
 
+/*
+  Read searches sent from the homepage.
+
+  Example:
+  search.html?area=Edinburgh&treatment=Sports%20Massage
+*/
+
+const pageParams =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const incomingArea =
+  pageParams.get('area') || '';
+
+
+const incomingTreatment =
+  pageParams.get('treatment') || '';
+
+
+if (incomingArea) {
+
+  whereSearch.value =
+    incomingArea;
+
+}
+
+
+if (incomingTreatment) {
+
+  treatmentSearch.value =
+    incomingTreatment;
+
+  filterTreatment.value =
+    incomingTreatment;
+
+}
+
+
+
 document
   .getElementById('topSearchForm')
   .addEventListener(
@@ -852,13 +938,16 @@ document
 
       event.preventDefault();
 
+
       filterTreatment.value =
         treatmentSearch.value;
+
 
       applySearch();
 
     }
   );
+
 
 
 document
@@ -869,6 +958,7 @@ document
   );
 
 
+
 treatmentSearch
   .addEventListener(
     'input',
@@ -877,10 +967,12 @@ treatmentSearch
       filterTreatment.value =
         treatmentSearch.value;
 
+
       applySearch();
 
     }
   );
+
 
 
 filterTreatment
@@ -891,17 +983,20 @@ filterTreatment
       treatmentSearch.value =
         filterTreatment.value;
 
+
       applySearch();
 
     }
   );
 
 
+
 [
   workSetting,
   durationFilter,
   priceFilter
-].forEach(control => {
+]
+.forEach(control => {
 
   control.addEventListener(
     'change',
@@ -911,6 +1006,7 @@ filterTreatment
 });
 
 
+
 sortResults
   .addEventListener(
     'change',
@@ -918,9 +1014,12 @@ sortResults
   );
 
 
+
 loadProfiles();
 
 </script>
 
+
 </body>
+
 </html>
