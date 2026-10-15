@@ -1,10 +1,926 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Find a Therapist — MassageMatch UK</title><link rel="stylesheet" href="styles.css"></head><body>
-<header class="topbar"><a class="brand" href="index.html"><span class="mark">M</span><span>MassageMatch<small>UK</small></span></a><nav><a href="search.html">Find a Therapist</a><a href="treatments.html">Treatments</a><a href="index.html#about">About</a><a href="index.html#login">Log in</a><a class="button small" href="join.html">List Your Profile</a></nav></header>
-<section class="results-hero"><div><span class="eyebrow">FIND YOUR THERAPIST</span><h1>Massage therapists in <em>Edinburgh</em></h1><p>Explore treatments, prices and working locations, then contact the therapist directly.</p></div>
-<form class="search results-search"><label><span>Where?</span><input value="Edinburgh"></label><label><span>Massage type</span><select><option>Any treatment</option><option>Sports Massage</option><option>Deep Tissue</option><option>Swedish</option></select></label><label><span>Therapist</span><select><option>Any therapist</option><option>Female therapist</option><option>Male therapist</option></select></label><button class="button" type="button">Update search</button></form></section>
-<main class="results-layout"><aside class="filters"><h3>Filter results</h3><label>Treatment<select><option>All treatments</option><option>Sports Massage</option><option>Deep Tissue</option><option>Swedish Massage</option></select></label><label>Where they work<select><option>Any</option><option>Studio</option><option>Mobile</option><option>Home clinic</option></select></label><label>Therapist preference<select><option>Any therapist</option><option>Female therapist</option><option>Male therapist</option></select></label><label>Where they work<select><option>Any</option><option>Mobile visits</option><option>Home studio</option><option>Treatment room / clinic</option></select></label><label>Session length<select><option>Any duration</option><option>30 minutes</option><option>60 minutes</option><option>90 minutes</option></select></label><label>Availability<select><option>Any availability</option><option>Daytime</option><option>Evenings</option><option>Weekends</option></select></label><label>Price<select><option>Any price</option><option>Under £40</option><option>£40–£60</option><option>£60+</option></select></label><button class="button wide">Apply filters</button></aside>
-<section class="result-list"><div class="result-top"><div><strong>3 preview profiles</strong><small>Example listings for development</small></div><select><option>Recommended</option><option>Price: low to high</option></select></div>
-<article class="result-card"><div class="result-photo rp1"><span>EXAMPLE PROFILE</span></div><div class="result-copy"><div class="verified">✓ Preview listing</div><h2>Sarah M.</h2><p class="loc">Edinburgh · Studio & mobile</p><p>Sports and deep tissue massage focused on recovery, mobility and helping clients feel their best.</p><div class="tags"><span>Sports Massage</span><span>Deep Tissue</span><span>Swedish</span></div><div class="result-bottom"><strong>From £45</strong><a class="button small" href="profile.html">View profile</a></div></div></article>
-<article class="result-card"><div class="result-photo rp2"><span>EXAMPLE PROFILE</span></div><div class="result-copy"><div class="verified">✓ Preview listing</div><h2>James T.</h2><p class="loc">Edinburgh · Home clinic</p><p>Therapeutic massage with a practical approach to muscular tension and everyday aches.</p><div class="tags"><span>Deep Tissue</span><span>Relaxation</span></div><div class="result-bottom"><strong>From £40</strong><a class="button small" href="profile.html">View profile</a></div></div></article>
-<article class="result-card"><div class="result-photo rp3"><span>EXAMPLE PROFILE</span></div><div class="result-copy"><div class="verified">✓ Preview listing</div><h2>Emma L.</h2><p class="loc">Edinburgh · Mobile</p><p>Relaxing treatments delivered in the comfort of your own home across Edinburgh.</p><div class="tags"><span>Swedish</span><span>Relaxation</span></div><div class="result-bottom"><strong>From £50</strong><a class="button small" href="profile.html">View profile</a></div></div></article>
-</section></main><footer><a class="brand footerbrand" href="index.html"><span class="mark">M</span><span>MassageMatch<small>UK</small></span></a><p>Created in Scotland. Built for therapists across the UK.</p><p class="tiny">Prototype v0.8</p></footer></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Find a Therapist — MassageMatch UK</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <a class="brand" href="index.html">
+    <span class="mark">M</span>
+    <span>MassageMatch<small>UK</small></span>
+  </a>
+
+  <nav>
+    <a href="search.html">Find a Therapist</a>
+    <a href="treatments.html">Treatments</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#login">Log in</a>
+    <a class="button small" href="join.html">List Your Profile</a>
+  </nav>
+
+</header>
+
+
+<section class="results-hero">
+
+  <div>
+
+    <span class="eyebrow">
+      FIND YOUR THERAPIST
+    </span>
+
+    <h1>
+      Find a therapist in
+      <em id="searchAreaHeading">your area</em>
+    </h1>
+
+    <p>
+      Search real MassageMatch profiles by location and treatment,
+      then contact the therapist directly.
+    </p>
+
+  </div>
+
+
+  <form
+    class="search results-search"
+    id="topSearchForm"
+  >
+
+    <label>
+      <span>Where?</span>
+
+      <input
+        id="whereSearch"
+        type="search"
+        placeholder="Town, city or postcode"
+        autocomplete="off"
+      >
+    </label>
+
+
+    <label>
+      <span>Treatment</span>
+
+      <input
+        id="treatmentSearch"
+        type="search"
+        placeholder="Sports, Hair Styling, Reiki..."
+        autocomplete="off"
+      >
+    </label>
+
+
+    <button
+      class="button"
+      type="submit"
+    >
+      Update search
+    </button>
+
+  </form>
+
+</section>
+
+
+
+<main class="results-layout">
+
+
+<aside class="filters">
+
+  <h3>Filter results</h3>
+
+
+  <label>
+
+    Treatment
+
+    <input
+      id="filterTreatment"
+      type="search"
+      placeholder="Search treatments..."
+      autocomplete="off"
+    >
+
+  </label>
+
+
+  <label>
+
+    Where they work
+
+    <select id="workSetting">
+
+      <option value="">
+        Any
+      </option>
+
+      <option value="mobile">
+        Mobile visits
+      </option>
+
+      <option value="home">
+        Home studio / clinic
+      </option>
+
+      <option value="treatment">
+        Treatment room / clinic
+      </option>
+
+    </select>
+
+  </label>
+
+
+  <label>
+
+    Session length
+
+    <select id="durationFilter">
+
+      <option value="">
+        Any duration
+      </option>
+
+      <option value="30">
+        30 minutes
+      </option>
+
+      <option value="60">
+        60 minutes
+      </option>
+
+      <option value="90">
+        90 minutes
+      </option>
+
+    </select>
+
+  </label>
+
+
+  <label>
+
+    Price
+
+    <select id="priceFilter">
+
+      <option value="">
+        Any price
+      </option>
+
+      <option value="under40">
+        £40 and under
+      </option>
+
+      <option value="40-60">
+        £40–£60
+      </option>
+
+      <option value="60plus">
+        £60+
+      </option>
+
+    </select>
+
+  </label>
+
+
+  <button
+    class="button wide"
+    type="button"
+    id="applyFilters"
+  >
+    Apply filters
+  </button>
+
+</aside>
+
+
+
+<section class="result-list">
+
+
+<div class="result-top">
+
+  <div>
+
+    <strong id="resultCount">
+      Loading therapists...
+    </strong>
+
+    <small id="resultMessage">
+      Live MassageMatch profiles
+    </small>
+
+  </div>
+
+
+  <select id="sortResults">
+
+    <option value="recommended">
+      Recommended
+    </option>
+
+    <option value="price">
+      Price: low to high
+    </option>
+
+  </select>
+
+</div>
+
+
+
+<div id="noResults" hidden>
+
+  <div class="billing-preview">
+
+    <b>No therapists found</b>
+
+    <p>
+      Try another location or treatment.
+    </p>
+
+  </div>
+
+</div>
+
+
+<div id="therapistResults"></div>
+
+
+</section>
+
+</main>
+
+
+
+<footer>
+
+  <a
+    class="brand footerbrand"
+    href="index.html"
+  >
+
+    <span class="mark">M</span>
+
+    <span>
+      MassageMatch<small>UK</small>
+    </span>
+
+  </a>
+
+  <p>
+    Created in Scotland. Built for therapists across the UK.
+  </p>
+
+  <p class="tiny">
+    © 2026 MassageMatch UK
+  </p>
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+
+const sb = window.mmSupabase;
+
+const resultsContainer =
+  document.getElementById('therapistResults');
+
+const resultCount =
+  document.getElementById('resultCount');
+
+const resultMessage =
+  document.getElementById('resultMessage');
+
+const noResults =
+  document.getElementById('noResults');
+
+const whereSearch =
+  document.getElementById('whereSearch');
+
+const treatmentSearch =
+  document.getElementById('treatmentSearch');
+
+const filterTreatment =
+  document.getElementById('filterTreatment');
+
+const workSetting =
+  document.getElementById('workSetting');
+
+const durationFilter =
+  document.getElementById('durationFilter');
+
+const priceFilter =
+  document.getElementById('priceFilter');
+
+const sortResults =
+  document.getElementById('sortResults');
+
+let allProfiles = [];
+
+
+
+function clean(value) {
+
+  return String(value || '')
+    .trim()
+    .toLowerCase();
+
+}
+
+
+
+function escapeHtml(value) {
+
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+}
+
+
+
+function treatmentList(profile) {
+
+  return Array.isArray(profile.treatments)
+    ? profile.treatments
+    : [];
+
+}
+
+
+
+function treatmentNames(profile) {
+
+  return treatmentList(profile)
+    .map(item => clean(item?.name))
+    .filter(Boolean);
+
+}
+
+
+
+function lowestPrice(profile) {
+
+  const prices = [];
+
+  treatmentList(profile).forEach(treatment => {
+
+    const durations =
+      Array.isArray(treatment?.durations)
+        ? treatment.durations
+        : [];
+
+    durations.forEach(duration => {
+
+      const price =
+        Number(duration?.price);
+
+      if (
+        Number.isFinite(price) &&
+        price > 0
+      ) {
+        prices.push(price);
+      }
+
+    });
+
+  });
+
+  return prices.length
+    ? Math.min(...prices)
+    : null;
+
+}
+
+
+
+function hasDuration(profile, minutes) {
+
+  if (!minutes) {
+    return true;
+  }
+
+  return treatmentList(profile)
+    .some(treatment => {
+
+      const durations =
+        Array.isArray(treatment?.durations)
+          ? treatment.durations
+          : [];
+
+      return durations.some(duration =>
+        Number(duration?.minutes) ===
+        Number(minutes)
+      );
+
+    });
+
+}
+
+
+
+function matchesPrice(price, filter) {
+
+  if (!filter) {
+    return true;
+  }
+
+  if (price === null) {
+    return false;
+  }
+
+  if (filter === 'under40') {
+    return price <= 40;
+  }
+
+  if (filter === '40-60') {
+    return price >= 40 && price <= 60;
+  }
+
+  if (filter === '60plus') {
+    return price >= 60;
+  }
+
+  return true;
+
+}
+
+
+
+function matchesWork(profile, filter) {
+
+  if (!filter) {
+    return true;
+  }
+
+  const workText = clean(
+    [
+      profile.settings,
+      profile.areas,
+      profile.mobile_areas,
+      profile.mobile ? 'mobile visits' : ''
+    ].filter(Boolean).join(' ')
+  );
+
+  if (filter === 'mobile') {
+    return workText.includes('mobile');
+  }
+
+  if (filter === 'home') {
+    return (
+      workText.includes('home') ||
+      workText.includes('studio')
+    );
+  }
+
+  if (filter === 'treatment') {
+    return (
+      workText.includes('treatment') ||
+      workText.includes('clinic')
+    );
+  }
+
+  return true;
+
+}
+
+
+
+function matchesArea(profile, area) {
+
+  if (!area) {
+    return true;
+  }
+
+  const profileArea = clean(
+    [
+      profile.location,
+      profile.areas,
+      profile.mobile_areas
+    ].filter(Boolean).join(' ')
+  );
+
+  return profileArea.includes(area);
+
+}
+
+
+
+function matchesTreatment(profile, treatment) {
+
+  if (!treatment) {
+    return true;
+  }
+
+  const names =
+    treatmentNames(profile).join(' ');
+
+  return names.includes(treatment);
+
+}
+
+
+
+function renderProfiles(profiles) {
+
+  resultsContainer.innerHTML = '';
+
+  if (!profiles.length) {
+
+    resultCount.textContent =
+      '0 therapists';
+
+    noResults.hidden = false;
+
+    return;
+  }
+
+  noResults.hidden = true;
+
+  resultCount.textContent =
+    profiles.length === 1
+      ? '1 therapist'
+      : `${profiles.length} therapists`;
+
+
+  profiles.forEach(profile => {
+
+    const article =
+      document.createElement('article');
+
+    article.className =
+      'result-card';
+
+
+    const name =
+      profile.display_name ||
+      profile.business_name ||
+      'MassageMatch therapist';
+
+
+    const location =
+      profile.location ||
+      profile.areas ||
+      'Location available on profile';
+
+
+    const about =
+      profile.bio ||
+      'View this therapist’s MassageMatch profile for more information.';
+
+
+    const treatments =
+      treatmentList(profile);
+
+
+    const treatmentTags =
+      treatments
+        .slice(0, 4)
+        .map(treatment =>
+          `<span>${escapeHtml(treatment.name)}</span>`
+        )
+        .join('');
+
+
+    const price =
+      lowestPrice(profile);
+
+
+    const priceText =
+      price !== null
+        ? `From £${price}`
+        : 'View prices';
+
+
+    article.innerHTML = `
+
+      <div class="result-photo">
+
+        <span>
+          MASSAGEMATCH PROFILE
+        </span>
+
+      </div>
+
+
+      <div class="result-copy">
+
+        <div class="verified">
+          ✓ MassageMatch profile
+        </div>
+
+
+        <h2>
+          ${escapeHtml(name)}
+        </h2>
+
+
+        <p class="loc">
+          ${escapeHtml(location)}
+        </p>
+
+
+        <p>
+          ${escapeHtml(about)}
+        </p>
+
+
+        <div class="tags">
+          ${treatmentTags}
+        </div>
+
+
+        <div class="result-bottom">
+
+          <strong>
+            ${escapeHtml(priceText)}
+          </strong>
+
+
+          <a
+            class="button small"
+            href="profile.html?user=${encodeURIComponent(profile.user_id)}"
+          >
+            View profile
+          </a>
+
+        </div>
+
+      </div>
+    `;
+
+
+    resultsContainer.appendChild(article);
+
+  });
+
+}
+
+
+
+function applySearch() {
+
+  const area =
+    clean(whereSearch.value);
+
+  const treatment =
+    clean(
+      filterTreatment.value ||
+      treatmentSearch.value
+    );
+
+  const work =
+    clean(workSetting.value);
+
+  const duration =
+    clean(durationFilter.value);
+
+  const priceFilterValue =
+    clean(priceFilter.value);
+
+
+  let matches =
+    allProfiles.filter(profile => {
+
+      const price =
+        lowestPrice(profile);
+
+      return (
+        matchesArea(profile, area) &&
+        matchesTreatment(profile, treatment) &&
+        matchesWork(profile, work) &&
+        hasDuration(profile, duration) &&
+        matchesPrice(price, priceFilterValue)
+      );
+
+    });
+
+
+  if (sortResults.value === 'price') {
+
+    matches.sort((a, b) => {
+
+      const priceA =
+        lowestPrice(a);
+
+      const priceB =
+        lowestPrice(b);
+
+      return (
+        (priceA ?? 999999) -
+        (priceB ?? 999999)
+      );
+
+    });
+
+  }
+
+
+  renderProfiles(matches);
+
+
+  document.getElementById(
+    'searchAreaHeading'
+  ).textContent =
+    whereSearch.value.trim() ||
+    'your area';
+
+}
+
+
+
+async function loadProfiles() {
+
+  if (!sb) {
+
+    resultCount.textContent =
+      'Could not load therapists';
+
+    resultMessage.textContent =
+      'MassageMatch connection did not load.';
+
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } = await sb
+    .from('profiles')
+    .select(`
+      user_id,
+      display_name,
+      business_name,
+      bio,
+      location,
+      areas,
+      settings,
+      mobile,
+      mobile_areas,
+      treatments,
+      plan,
+      subscription_status,
+      created_at
+    `)
+    .order(
+      'created_at',
+      { ascending: false }
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    resultCount.textContent =
+      'Could not load therapists';
+
+    resultMessage.textContent =
+      error.message;
+
+    return;
+  }
+
+
+  /*
+    Keep only the newest profile row for each user.
+
+    This prevents old test/duplicate rows appearing
+    more than once in search.
+  */
+
+  const seenUsers =
+    new Set();
+
+
+  allProfiles =
+    (data || []).filter(profile => {
+
+      if (!profile.user_id) {
+        return false;
+      }
+
+      if (seenUsers.has(profile.user_id)) {
+        return false;
+      }
+
+      seenUsers.add(profile.user_id);
+
+      return true;
+
+    });
+
+
+  resultMessage.textContent =
+    'Live MassageMatch profiles';
+
+
+  applySearch();
+
+}
+
+
+
+document
+  .getElementById('topSearchForm')
+  .addEventListener(
+    'submit',
+    event => {
+
+      event.preventDefault();
+
+      filterTreatment.value =
+        treatmentSearch.value;
+
+      applySearch();
+
+    }
+  );
+
+
+document
+  .getElementById('applyFilters')
+  .addEventListener(
+    'click',
+    applySearch
+  );
+
+
+treatmentSearch
+  .addEventListener(
+    'input',
+    () => {
+
+      filterTreatment.value =
+        treatmentSearch.value;
+
+      applySearch();
+
+    }
+  );
+
+
+filterTreatment
+  .addEventListener(
+    'input',
+    () => {
+
+      treatmentSearch.value =
+        filterTreatment.value;
+
+      applySearch();
+
+    }
+  );
+
+
+[
+  workSetting,
+  durationFilter,
+  priceFilter
+].forEach(control => {
+
+  control.addEventListener(
+    'change',
+    applySearch
+  );
+
+});
+
+
+sortResults
+  .addEventListener(
+    'change',
+    applySearch
+  );
+
+
+loadProfiles();
+
+</script>
+
+</body>
+</html>
