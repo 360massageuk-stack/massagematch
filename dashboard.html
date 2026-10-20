@@ -26,8 +26,8 @@
 
   <section class="dashboard-head">
     <div>
-      <span class="eyebrow">THERAPIST DASHBOARD · PREVIEW</span>
-      <h1 id="dashboardGreeting">Good afternoon.</h1>
+      <span class="eyebrow">THERAPIST DASHBOARD</span>
+      <h1 id="dashboardGreeting">Welcome back.</h1>
       <p>Everything important about your MassageMatch profile in one place.</p>
     </div>
 
@@ -40,7 +40,7 @@
     <aside class="dash-nav">
 
       <div class="dash-person">
-        <div class="avatar">SM</div>
+        <div class="avatar">MM</div>
 
         <div>
           <strong id="dashboardName">Therapist</strong>
@@ -55,7 +55,7 @@
       </a>
 
       <a href="join.html?edit=1">
-        Photos <span>4 / 6</span>
+        Photos
       </a>
 
       <a href="join.html?edit=1&step=2">
@@ -72,10 +72,6 @@
 
       <a href="#boost">
         Boost profile
-      </a>
-
-      <a href="#">
-        Pause profile
       </a>
 
     </aside>
@@ -104,9 +100,9 @@
 
 
         <article>
-          <small>FREE UNTIL</small>
+          <small>FOUNDING OFFER</small>
 
-          <strong>6 Dec 2026</strong>
+          <strong>First 2 months free</strong>
 
           <span id="membershipPrice">
             Membership price
@@ -121,7 +117,7 @@
         <div>
           <span class="eyebrow">YOUR PROFILE</span>
 
-          <h2>Looking good.</h2>
+          <h2>Keep your profile up to date.</h2>
 
           <p>
             Your profile is live. Keep your treatments, prices,
@@ -133,16 +129,13 @@
 
         <div class="profile-meter">
 
-          <b>Profile strength</b>
+          <b>Profile checklist</b>
 
-          <strong>85%</strong>
-
-          <div>
-            <i style="width:85%"></i>
-          </div>
+          <strong>Keep it fresh</strong>
 
           <small>
-            Add 2 more photos to make the most of your plan.
+            Good photos, accurate prices and current contact details
+            help clients decide whether you're right for them.
           </small>
 
         </div>
@@ -163,7 +156,7 @@
         <a href="join.html?edit=1">
           <b>▣ Manage photos</b>
           <span>
-            4 of 6 photo spaces used
+            Add, remove or update your profile photos
           </span>
         </a>
 
@@ -194,9 +187,9 @@
           <h2>Get seen by more local clients.</h2>
 
           <p>
-            Optional boosts will let you feature your profile
-            in relevant areas or treatment searches for a
-            limited period.
+            Optional profile boosts are planned for MassageMatch,
+            giving therapists another way to increase visibility
+            in relevant areas and treatment searches.
           </p>
         </div>
 
@@ -204,8 +197,8 @@
         <button
           class="button"
           type="button"
-          onclick="alert('Boost payments are not connected yet — this is the v0.7 preview.')">
-          Preview Boost
+          onclick="alert('Profile boosts are coming soon.')">
+          Coming Soon
         </button>
 
       </div>
@@ -228,12 +221,6 @@
 
   </section>
 
-
-  <p class="demo-note">
-    Dashboard preview only — accounts, live statistics and
-    payments are not connected yet.
-  </p>
-
 </main>
 
 
@@ -249,7 +236,7 @@
   </p>
 
   <p class="tiny">
-    © 2026 MassageMatch UK · Prototype v1.0
+    © 2026 MassageMatch UK
   </p>
 
 </footer>
@@ -342,10 +329,23 @@
     planPrices[planKey] || '';
 
 
+  const hour = new Date().getHours();
+
+  let greeting = 'Hello';
+
+  if (hour < 12) {
+    greeting = 'Good morning';
+  } else if (hour < 18) {
+    greeting = 'Good afternoon';
+  } else {
+    greeting = 'Good evening';
+  }
+
+
   document.getElementById(
     'dashboardGreeting'
   ).textContent =
-    `Good afternoon, ${firstName}.`;
+    `${greeting}, ${firstName}.`;
 
 
   document.getElementById(
