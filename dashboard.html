@@ -15,14 +15,31 @@
     <span>MassageMatch<small>UK</small></span>
   </a>
 
-  <nav>
+  <button
+    class="menu"
+    id="menuButton"
+    type="button"
+    aria-label="Open menu"
+    aria-expanded="false"
+  >
+    ☰
+  </button>
+
+  <nav id="mainNav">
     <a href="search.html">Find a Therapist</a>
     <a href="pricing.html">Membership</a>
-    <a class="button small" href="join.html?edit=1">Edit Profile</a>
+    <a href="join.html?edit=1">Edit Profile</a>
+    <button
+      class="button small"
+      id="logoutButton"
+      type="button"
+    >
+      Log out
+    </button>
   </nav>
 </header>
 
-<main class="dashboard-page">
+<main class="dashboard-page" id="dashboardMain" hidden>
 
   <section class="dashboard-head">
     <div>
@@ -31,7 +48,7 @@
       <p>Everything important about your MassageMatch profile in one place.</p>
     </div>
 
-    <div class="live-pill">● PROFILE LIVE</div>
+    <div class="live-pill" id="profileStatusPill">● PROFILE LIVE</div>
   </section>
 
 
@@ -40,7 +57,7 @@
     <aside class="dash-nav">
 
       <div class="dash-person">
-        <div class="avatar">MM</div>
+        <div class="avatar" id="dashboardAvatar">MM</div>
 
         <div>
           <strong id="dashboardName">Therapist</strong>
@@ -74,6 +91,14 @@
         Boost profile
       </a>
 
+      <button
+        class="outline"
+        id="sidebarLogoutButton"
+        type="button"
+      >
+        Log out
+      </button>
+
     </aside>
 
 
@@ -83,8 +108,8 @@
 
         <article>
           <small>PROFILE STATUS</small>
-          <strong class="good">Live</strong>
-          <span>Visible in search</span>
+          <strong class="good" id="profileStatusText">Live</strong>
+          <span id="profileStatusSubtext">Visible in search</span>
         </article>
 
 
@@ -120,9 +145,8 @@
           <h2>Keep your profile up to date.</h2>
 
           <p>
-            Your profile is live. Keep your treatments, prices,
-            photos and mobile areas up to date so clients know
-            exactly what you offer.
+            Keep your treatments, prices, photos and mobile areas
+            up to date so clients know exactly what you offer.
           </p>
         </div>
 
@@ -224,6 +248,14 @@
 </main>
 
 
+<div
+  id="dashboardLoading"
+  style="max-width:900px;margin:70px auto;padding:30px;text-align:center"
+>
+  Loading your dashboard...
+</div>
+
+
 <footer>
 
   <a class="brand footerbrand" href="index.html">
@@ -249,60 +281,158 @@
 <script>
 (async () => {
 
-  const sb = window.mmSupabase;
+  const sb =
+    window.mmSupabase;
+
+
+  const dashboardMain =
+    document.getElementById(
+      'dashboardMain'
+    );
+
+
+  const dashboardLoading =
+    document.getElementById(
+      'dashboardLoading'
+    );
+
+
+  const menuButton =
+    document.getElementById(
+      'menuButton'
+    );
+
+
+  const mainNav =
+    document.getElementById(
+      'mainNav'
+    );
+
+
+  function loginUrl() {
+
+    return (
+      'login.html?next=' +
+      encodeURIComponent(
+        'dashboard.html'
+      )
+    );
+
+  }
+
 
   if (!sb) {
+
+    window.location.replace(
+      loginUrl()
+    );
+
     return;
+
   }
 
 
   const {
-    data: { user }
-  } = await sb.auth.getUser();
+    data: { user },
+    error: userError
+  } =
+    await sb.auth.getUser();
 
 
-  if (!user) {
+  if (
+    userError ||
+    !user
+  ) {
+
+    window.location.replace(
+      loginUrl()
+    );
+
     return;
+
   }
 
 
   const {
     data: profile,
     error
-  } = await sb
-    .from('profiles')
-    .select('display_name, plan')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle();
+  } =
+    await sb
+      .from('profiles')
+      .select(
+        'display_name, plan, subscription_status'
+      )
+      .eq(
+        'user_id',
+        user.id
+      )
+      .order(
+        'created_at',
+        { ascending: false }
+      )
+      .limit(1)
+      .maybeSingle();
 
 
   if (error) {
+
     console.error(
       'Could not load dashboard profile:',
       error
     );
 
+    dashboardLoading.textContent =
+      'Could not load your dashboard. Please refresh and try again.';
+
     return;
+
   }
 
 
   if (!profile) {
+
+    window.location.replace(
+      'pricing.html'
+    );
+
     return;
+
   }
 
 
   const name =
-    profile.display_name || 'Therapist';
+    profile.display_name ||
+    'Therapist';
 
 
   const firstName =
     name.split(' ')[0];
 
 
+  const initials =
+    name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(part =>
+        part.charAt(0).toUpperCase()
+      )
+      .join('') ||
+    'MM';
+
+
   const planKey =
-    String(profile.plan || '')
+    String(
+      profile.plan || ''
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const status =
+    String(
+      profile.subscription_status || ''
+    )
       .trim()
       .toLowerCase();
 
@@ -322,23 +452,40 @@
 
 
   const planName =
-    planNames[planKey] || 'Plan';
+    planNames[planKey] ||
+    'Plan';
 
 
   const planPrice =
-    planPrices[planKey] || '';
+    planPrices[planKey] ||
+    '';
 
 
-  const hour = new Date().getHours();
+  const hour =
+    new Date().getHours();
 
-  let greeting = 'Hello';
+
+  let greeting =
+    'Hello';
+
 
   if (hour < 12) {
-    greeting = 'Good morning';
-  } else if (hour < 18) {
-    greeting = 'Good afternoon';
-  } else {
-    greeting = 'Good evening';
+
+    greeting =
+      'Good morning';
+
+  }
+  else if (hour < 18) {
+
+    greeting =
+      'Good afternoon';
+
+  }
+  else {
+
+    greeting =
+      'Good evening';
+
   }
 
 
@@ -352,6 +499,12 @@
     'dashboardName'
   ).textContent =
     name;
+
+
+  document.getElementById(
+    'dashboardAvatar'
+  ).textContent =
+    initials;
 
 
   document.getElementById(
@@ -372,6 +525,195 @@
     planPrice
       ? `Then ${planPrice} / month · reminder before due`
       : 'Membership price unavailable';
+
+
+  const statusPill =
+    document.getElementById(
+      'profileStatusPill'
+    );
+
+
+  const statusText =
+    document.getElementById(
+      'profileStatusText'
+    );
+
+
+  const statusSubtext =
+    document.getElementById(
+      'profileStatusSubtext'
+    );
+
+
+  if (
+    status === 'active' ||
+    status === 'trialing'
+  ) {
+
+    statusPill.textContent =
+      '● PROFILE LIVE';
+
+    statusText.textContent =
+      'Live';
+
+    statusSubtext.textContent =
+      'Visible in search';
+
+  }
+  else if (
+    status === 'pending_payment'
+  ) {
+
+    statusPill.textContent =
+      '● SETUP IN PROGRESS';
+
+    statusText.textContent =
+      'Pending';
+
+    statusSubtext.textContent =
+      'Complete membership setup';
+
+  }
+  else {
+
+    statusPill.textContent =
+      '● PROFILE STATUS';
+
+    statusText.textContent =
+      status
+        ? status.replaceAll('_', ' ')
+        : 'Setup';
+
+    statusSubtext.textContent =
+      'Check your membership status';
+
+  }
+
+
+  dashboardLoading.hidden =
+    true;
+
+  dashboardMain.hidden =
+    false;
+
+
+  async function logOut() {
+
+    const {
+      error
+    } =
+      await sb.auth.signOut();
+
+
+    if (error) {
+
+      console.error(
+        'Could not log out:',
+        error
+      );
+
+      alert(
+        'Could not log out. Please try again.'
+      );
+
+      return;
+
+    }
+
+
+    window.location.replace(
+      'login.html'
+    );
+
+  }
+
+
+  document.getElementById(
+    'logoutButton'
+  )?.addEventListener(
+    'click',
+    logOut
+  );
+
+
+  document.getElementById(
+    'sidebarLogoutButton'
+  )?.addEventListener(
+    'click',
+    logOut
+  );
+
+
+  menuButton?.addEventListener(
+    'click',
+    () => {
+
+      const open =
+        mainNav.classList.toggle(
+          'open'
+        );
+
+
+      menuButton.setAttribute(
+        'aria-expanded',
+        String(open)
+      );
+
+
+      menuButton.setAttribute(
+        'aria-label',
+        open
+          ? 'Close menu'
+          : 'Open menu'
+      );
+
+
+      menuButton.textContent =
+        open
+          ? '✕'
+          : '☰';
+
+    }
+  );
+
+
+  mainNav
+    ?.querySelectorAll('a')
+    .forEach(link => {
+
+      link.addEventListener(
+        'click',
+        () => {
+
+          mainNav.classList.remove(
+            'open'
+          );
+
+
+          menuButton?.setAttribute(
+            'aria-expanded',
+            'false'
+          );
+
+
+          menuButton?.setAttribute(
+            'aria-label',
+            'Open menu'
+          );
+
+
+          if (menuButton) {
+
+            menuButton.textContent =
+              '☰';
+
+          }
+
+        }
+      );
+
+    });
+
 
 })();
 </script>
