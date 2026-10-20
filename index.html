@@ -712,6 +712,72 @@ menuButton?.addEventListener(
       String(open)
     );
 
+    menuButton.setAttribute(
+      'aria-label',
+      open ? 'Close menu' : 'Open menu'
+    );
+
+    menuButton.textContent =
+      open ? '✕' : '☰';
+
+  }
+);
+
+
+mainNav
+  ?.querySelectorAll('a')
+  .forEach(link => {
+
+    link.addEventListener(
+      'click',
+      () => {
+
+        mainNav.classList.remove('open');
+
+        menuButton?.setAttribute(
+          'aria-expanded',
+          'false'
+        );
+
+        menuButton?.setAttribute(
+          'aria-label',
+          'Open menu'
+        );
+
+        if (menuButton) {
+          menuButton.textContent = '☰';
+        }
+
+      }
+    );
+
+  });
+
+
+window.addEventListener(
+  'resize',
+  () => {
+
+    if (window.innerWidth > 800) {
+
+      mainNav?.classList.remove('open');
+
+      menuButton?.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
+      menuButton?.setAttribute(
+        'aria-label',
+        'Open menu'
+      );
+
+      if (menuButton) {
+        menuButton.textContent = '☰';
+      }
+
+    }
+
   }
 );
 
