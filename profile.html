@@ -51,6 +51,30 @@
       background:#fff;
       overflow-wrap:anywhere;
     }
+
+    .profile-main-photo{
+      width:100%;
+      min-height:520px;
+      background-size:cover;
+      background-position:center;
+      border-radius:14px;
+    }
+
+    .profile-thumbs{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .profile-thumbs button{
+      min-height:90px;
+      border:0;
+      border-radius:10px;
+      background-size:cover;
+      background-position:center;
+      cursor:pointer;
+    }
   </style>
 </head>
 
@@ -106,9 +130,9 @@
   <section class="profile-hero">
 
 
-    <div class="profile-gallery">
+    <div class="profile-gallery" id="profileGallery">
 
-      <div class="live-profile-placeholder">
+      <div class="live-profile-placeholder" id="profilePhotoFallback">
 
         <div>
           <strong id="photoName">
@@ -270,11 +294,11 @@
         <h3>Profile information</h3>
 
         <p>
-          ✓ Therapist controls their profile
+          ✓ Profile information supplied by the therapist
         </p>
 
         <p>
-          ✓ Therapist controls contact details
+          ✓ Contact details supplied by the therapist
         </p>
 
         <p>
@@ -448,6 +472,7 @@
       mobile,
       mobile_areas,
       treatments,
+      photos,
       plan,
       subscription_status,
       created_at
@@ -530,6 +555,88 @@
     'photoName'
   ).textContent =
     businessName || name;
+
+
+  const profileGallery =
+    document.getElementById(
+      'profileGallery'
+    );
+
+
+  const photos =
+    Array.isArray(profile.photos)
+      ? profile.photos.filter(photo =>
+          typeof photo === 'string' &&
+          photo.trim()
+        )
+      : [];
+
+
+  if (photos.length) {
+
+    const mainPhoto =
+      document.createElement('div');
+
+    mainPhoto.className =
+      'profile-main-photo';
+
+    mainPhoto.style.backgroundImage =
+      `url("${photos[0].replace(/"/g, '%22')}")`;
+
+    profileGallery.innerHTML = '';
+
+    profileGallery.appendChild(
+      mainPhoto
+    );
+
+
+    if (photos.length > 1) {
+
+      const thumbs =
+        document.createElement('div');
+
+      thumbs.className =
+        'profile-thumbs';
+
+
+      photos.forEach(photo => {
+
+        const button =
+          document.createElement('button');
+
+        button.type =
+          'button';
+
+        button.setAttribute(
+          'aria-label',
+          'View profile photo'
+        );
+
+        button.style.backgroundImage =
+          `url("${photo.replace(/"/g, '%22')}")`;
+
+        button.addEventListener(
+          'click',
+          () => {
+            mainPhoto.style.backgroundImage =
+              `url("${photo.replace(/"/g, '%22')}")`;
+          }
+        );
+
+        thumbs.appendChild(
+          button
+        );
+
+      });
+
+
+      profileGallery.appendChild(
+        thumbs
+      );
+
+    }
+
+  }
 
 
   document.getElementById(
