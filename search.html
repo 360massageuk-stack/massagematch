@@ -642,13 +642,31 @@ function renderProfiles(profiles) {
         : 'View prices';
 
 
+    const photos =
+      Array.isArray(profile.photos)
+        ? profile.photos
+        : [];
+
+
+    const firstPhoto =
+      photos.find(photo =>
+        typeof photo === 'string' && photo.trim()
+      ) || '';
+
+
+    const photoStyle =
+      firstPhoto
+        ? ` style="background-image:url('${escapeHtml(firstPhoto)}');background-size:cover;background-position:center;"`
+        : '';
+
+
     article.innerHTML = `
 
-      <div class="result-photo">
+      <div class="result-photo"${photoStyle}>
 
-        <span>
-          MASSAGEMATCH PROFILE
-        </span>
+        ${firstPhoto
+          ? ''
+          : `<span>MASSAGEMATCH PROFILE</span>`}
 
       </div>
 
@@ -819,6 +837,7 @@ async function loadProfiles() {
       mobile,
       mobile_areas,
       treatments,
+      photos,
       plan,
       subscription_status,
       created_at
