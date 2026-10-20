@@ -1,4 +1,4 @@
-(() => {
+(async () => {
   const planParams = new URLSearchParams(window.location.search);
   const validPlans = ['basic', 'plus', 'premium'];
 
@@ -28,6 +28,59 @@
 
   const sb =
     window.mmSupabase;
+
+
+  function loginRedirectUrl() {
+
+    const next =
+      window.location.pathname.split('/').pop() +
+      window.location.search;
+
+    return (
+      'login.html?next=' +
+      encodeURIComponent(next)
+    );
+
+  }
+
+
+  if (!sb) {
+
+    alert(
+      'MassageMatch connection did not load. Please refresh and try again.'
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data: { user: signedInUser },
+    error: authCheckError
+  } =
+    await sb.auth.getUser();
+
+
+  if (authCheckError) {
+
+    console.error(
+      'Could not check MassageMatch login:',
+      authCheckError
+    );
+
+  }
+
+
+  if (!signedInUser) {
+
+    window.location.replace(
+      loginRedirectUrl()
+    );
+
+    return;
+
+  }
 
 
   const steps =
@@ -444,7 +497,7 @@
         ? (
             isEdit
               ? 'Save changes'
-              : 'Submit for review'
+              : 'Save profile'
           )
         : 'Continue';
 
@@ -1152,12 +1205,9 @@
 
     if (!user) {
 
-      alert(
-        'Your editing session has expired. Please return to your dashboard.'
+      window.location.replace(
+        loginRedirectUrl()
       );
-
-      window.location.href =
-        'dashboard.html';
 
       return;
 
@@ -1391,7 +1441,7 @@
     }
 
 
-    let {
+    const {
       data: { user },
       error: userError
     } =
@@ -1403,24 +1453,15 @@
     }
 
 
-
     if (!user) {
 
-      const {
-        data: authData,
-        error: authError
-      } =
-        await sb.auth
-          .signInAnonymously();
+      window.location.replace(
+        loginRedirectUrl()
+      );
 
-
-      if (authError) {
-        throw authError;
-      }
-
-
-      user =
-        authData.user;
+      throw new Error(
+        'Please log in to continue.'
+      );
 
     }
 
@@ -1428,7 +1469,6 @@
     return user;
 
   }
-
 
 
   function fileExtension(file) {
