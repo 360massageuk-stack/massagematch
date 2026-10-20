@@ -150,6 +150,33 @@
       display:none !important;
     }
 
+    .password-wrap{
+      position:relative;
+    }
+
+    .password-wrap input{
+      padding-right:82px;
+    }
+
+    .password-toggle{
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      border:0;
+      background:transparent;
+      color:#245e5b;
+      font:inherit;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+      padding:6px 8px;
+    }
+
+    .password-toggle:hover{
+      text-decoration:underline;
+    }
+
     @media (max-width:600px){
       .auth-shell{
         padding:24px 18px;
@@ -216,14 +243,24 @@
 
       <label id="passwordLabel">
         Password
-        <input
-          id="password"
-          type="password"
-          autocomplete="current-password"
-          required
-          minlength="8"
-          placeholder="Your password"
-        >
+        <div class="password-wrap">
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            minlength="8"
+            placeholder="Your password"
+          >
+          <button
+            class="password-toggle"
+            type="button"
+            data-toggle-password="password"
+            aria-label="Show password"
+          >
+            Show
+          </button>
+        </div>
         <span class="password-hint" id="passwordHint">
           Use at least 8 characters.
         </span>
@@ -232,13 +269,23 @@
 
       <label id="confirmPasswordLabel" class="auth-hidden">
         Confirm password
-        <input
-          id="confirmPassword"
-          type="password"
-          autocomplete="new-password"
-          minlength="8"
-          placeholder="Repeat your password"
-        >
+        <div class="password-wrap">
+          <input
+            id="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            minlength="8"
+            placeholder="Repeat your password"
+          >
+          <button
+            class="password-toggle"
+            type="button"
+            data-toggle-password="confirmPassword"
+            aria-label="Show password"
+          >
+            Show
+          </button>
+        </div>
       </label>
 
 
@@ -288,26 +335,46 @@
 
       <label>
         New password
-        <input
-          id="newPassword"
-          type="password"
-          autocomplete="new-password"
-          required
-          minlength="8"
-          placeholder="New password"
-        >
+        <div class="password-wrap">
+          <input
+            id="newPassword"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            placeholder="New password"
+          >
+          <button
+            class="password-toggle"
+            type="button"
+            data-toggle-password="newPassword"
+            aria-label="Show password"
+          >
+            Show
+          </button>
+        </div>
       </label>
 
       <label>
         Confirm new password
-        <input
-          id="newPasswordConfirm"
-          type="password"
-          autocomplete="new-password"
-          required
-          minlength="8"
-          placeholder="Repeat new password"
-        >
+        <div class="password-wrap">
+          <input
+            id="newPasswordConfirm"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            placeholder="Repeat new password"
+          >
+          <button
+            class="password-toggle"
+            type="button"
+            data-toggle-password="newPasswordConfirm"
+            aria-label="Show password"
+          >
+            Show
+          </button>
+        </div>
       </label>
 
       <button class="button auth-action" type="submit">
@@ -504,6 +571,56 @@
     document.getElementById(
       'newPasswordConfirm'
     );
+
+
+  document
+    .querySelectorAll(
+      '[data-toggle-password]'
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        'click',
+        () => {
+
+          const input =
+            document.getElementById(
+              button.dataset.togglePassword
+            );
+
+
+          if (!input) {
+            return;
+          }
+
+
+          const showing =
+            input.type === 'text';
+
+
+          input.type =
+            showing
+              ? 'password'
+              : 'text';
+
+
+          button.textContent =
+            showing
+              ? 'Show'
+              : 'Hide';
+
+
+          button.setAttribute(
+            'aria-label',
+            showing
+              ? 'Show password'
+              : 'Hide password'
+          );
+
+        }
+      );
+
+    });
 
 
   const message =
