@@ -642,16 +642,47 @@ function renderProfiles(profiles) {
         : 'View prices';
 
 
-    const photos =
-      Array.isArray(profile.photos)
-        ? profile.photos
-        : [];
+    const savedPhotoPaths = (() => {
+
+      if (Array.isArray(profile.photo_paths)) {
+        return profile.photo_paths.filter(Boolean);
+      }
+
+      if (
+        typeof profile.photo_paths === 'string' &&
+        profile.photo_paths.trim()
+      ) {
+        try {
+          const parsed = JSON.parse(profile.photo_paths);
+          return Array.isArray(parsed)
+            ? parsed.filter(Boolean)
+            : [];
+        }
+        catch {
+          return [];
+        }
+      }
+
+      return [];
+
+    })();
+
+
+    const mainPhotoPath =
+      profile.main_photo_path ||
+      savedPhotoPaths[0] ||
+      '';
 
 
     const firstPhoto =
-      photos.find(photo =>
-        typeof photo === 'string' && photo.trim()
-      ) || '';
+      mainPhotoPath
+        ? (
+            sb.storage
+              .from('profile-photos')
+              .getPublicUrl(mainPhotoPath)
+              .data?.publicUrl || ''
+          )
+        : '';
 
 
     const photoStyle =
@@ -837,7 +868,8 @@ async function loadProfiles() {
       mobile,
       mobile_areas,
       treatments,
-      photos,
+      photo_paths,
+      main_photo_path,
       plan,
       subscription_status,
       created_at
