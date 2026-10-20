@@ -51,3 +51,79 @@ url("assets/hero.jpg") center right/cover no-repeat}
     box-sizing:border-box;
   }
 }
+
+/* v1.1 mobile navigation + homepage search fix */
+@media(max-width:800px){
+  .topbar{
+    height:auto;
+    min-height:78px;
+    flex-wrap:wrap;
+    padding-top:12px;
+    padding-bottom:12px;
+  }
+
+  .topbar .menu{
+    display:block;
+    position:relative;
+    z-index:22;
+    padding:8px;
+    line-height:1;
+    cursor:pointer;
+    color:#173c3d;
+  }
+
+  .topbar nav{
+    display:none;
+    width:100%;
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    padding:12px 0 4px;
+    border-top:1px solid #e4ecea;
+    margin-top:12px;
+    background:#fff;
+  }
+
+  .topbar nav.open{
+    display:flex;
+  }
+
+  .topbar nav a{
+    display:block;
+    width:100%;
+    padding:13px 4px;
+    border-bottom:1px solid #edf2f1;
+  }
+
+  .topbar nav a.button{
+    width:100%;
+    margin-top:10px;
+    padding:13px 16px;
+    text-align:center;
+    border-bottom:0;
+  }
+
+  .hero .search{
+    display:block;
+    width:100%;
+    max-width:100%;
+    padding:10px;
+    overflow:hidden;
+  }
+
+  .hero .search label{
+    width:100%;
+    max-width:100%;
+  }
+
+  .hero .search .button{
+    display:block;
+    width:100%;
+    max-width:100%;
+    margin:8px 0 0;
+    padding-left:12px;
+    padding-right:12px;
+    box-sizing:border-box;
+  }
+}
+
