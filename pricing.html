@@ -494,7 +494,9 @@ document
             () => {
 
               window.location.href =
-                `join.html?plan=${encodeURIComponent(selectedPlan)}`;
+                `login.html?mode=signup&next=${encodeURIComponent(
+                  `join.html?plan=${selectedPlan}`
+                )}`;
 
             },
             600
@@ -537,7 +539,9 @@ document
               () => {
 
                 window.location.href =
-                  `join.html?plan=${encodeURIComponent(selectedPlan)}`;
+                  `login.html?mode=signup&next=${encodeURIComponent(
+                    `join.html?plan=${selectedPlan}`
+                  )}`;
 
               },
               600
@@ -620,11 +624,11 @@ document
           /*
             EXISTING TEST / UNPAID PROFILE
 
-            During development we allow the selected
-            plan to be changed directly in Supabase.
+            If the profile has not completed payment yet,
+            allow the selected plan to be updated before checkout.
 
-            Paid subscriptions will be handled
-            securely through Square before launch.
+            Active subscriptions are not changed silently
+            from the browser.
           */
 
           if (
