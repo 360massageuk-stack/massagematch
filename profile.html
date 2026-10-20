@@ -75,6 +75,21 @@
       background-position:center;
       cursor:pointer;
     }
+
+    .profile-gallery.has-real-photos{
+      display:block;
+      height:auto;
+    }
+
+    .profile-gallery.has-real-photos .profile-main-photo{
+      min-height:520px;
+    }
+
+    @media(max-width:800px){
+      .profile-gallery.has-real-photos .profile-main-photo{
+        min-height:360px;
+      }
+    }
   </style>
 </head>
 
@@ -472,7 +487,8 @@
       mobile,
       mobile_areas,
       treatments,
-      photos,
+      photo_paths,
+      main_photo_path,
       plan,
       subscription_status,
       created_at
@@ -563,16 +579,61 @@
     );
 
 
+  const savedPhotoPaths = (() => {
+
+    if (Array.isArray(profile.photo_paths)) {
+      return profile.photo_paths.filter(Boolean);
+    }
+
+    if (
+      typeof profile.photo_paths === 'string' &&
+      profile.photo_paths.trim()
+    ) {
+      try {
+        const parsed =
+          JSON.parse(profile.photo_paths);
+
+        return Array.isArray(parsed)
+          ? parsed.filter(Boolean)
+          : [];
+      }
+      catch {
+        return [];
+      }
+    }
+
+    return [];
+
+  })();
+
+
+  const orderedPhotoPaths = [
+    profile.main_photo_path,
+    ...savedPhotoPaths
+  ]
+    .filter(Boolean)
+    .filter(
+      (path, index, array) =>
+        array.indexOf(path) === index
+    );
+
+
   const photos =
-    Array.isArray(profile.photos)
-      ? profile.photos.filter(photo =>
-          typeof photo === 'string' &&
-          photo.trim()
-        )
-      : [];
+    orderedPhotoPaths
+      .map(path =>
+        sb.storage
+          .from('profile-photos')
+          .getPublicUrl(path)
+          .data?.publicUrl || ''
+      )
+      .filter(Boolean);
 
 
   if (photos.length) {
+
+    profileGallery.classList.add(
+      'has-real-photos'
+    );
 
     const mainPhoto =
       document.createElement('div');
