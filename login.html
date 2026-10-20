@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Therapist Login | MassageMatch UK</title>
+  <meta name="description" content="Sign in to your MassageMatch UK therapist account or create a new therapist account.">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .auth-page{
+      min-height:calc(100vh - 180px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:60px 20px;
+      background:#f6f4ef;
+    }
+
+    .auth-shell{
+      width:min(100%,520px);
+      background:#fff;
+      border:1px solid #e2e7e4;
+      border-radius:18px;
+      padding:34px;
+      box-shadow:0 16px 45px rgba(24,57,58,.08);
+    }
+
+    .auth-shell h1{
+      margin:8px 0 10px;
+    }
+
+    .auth-shell > p{
+      margin-top:0;
+      color:#66716d;
+      line-height:1.6;
+    }
+
+    .auth-tabs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin:24px 0;
+      background:#f1f4f2;
+      padding:5px;
+      border-radius:12px;
+    }
+
+    .auth-tabs button{
+      border:0;
+      background:transparent;
+      padding:11px 12px;
+      border-radius:9px;
+      cursor:pointer;
+      font:inherit;
+      font-weight:700;
+    }
+
+    .auth-tabs button.active{
+      background:#fff;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .auth-form{
+      display:grid;
+      gap:16px;
+    }
+
+    .auth-form label{
+      display:grid;
+      gap:7px;
+      font-weight:700;
+    }
+
+    .auth-form input{
+      width:100%;
+      box-sizing:border-box;
+      padding:13px 14px;
+      border:1px solid #ccd7d2;
+      border-radius:10px;
+      font:inherit;
+      background:#fff;
+    }
+
+    .auth-form input:focus{
+      outline:2px solid rgba(26,91,88,.18);
+      border-color:#1d625e;
+    }
+
+    .auth-action{
+      width:100%;
+      margin-top:4px;
+    }
+
+    .auth-link{
+      border:0;
+      background:transparent;
+      color:#245e5b;
+      padding:0;
+      cursor:pointer;
+      text-decoration:underline;
+      font:inherit;
+    }
+
+    .auth-foot{
+      margin-top:18px;
+      text-align:center;
+      color:#66716d;
+      font-size:14px;
+    }
+
+    .auth-message{
+      display:none;
+      margin:18px 0 0;
+      padding:13px 14px;
+      border-radius:10px;
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .auth-message.show{
+      display:block;
+    }
+
+    .auth-message.good{
+      background:#edf7f1;
+      border:1px solid #cce5d5;
+      color:#1c5a38;
+    }
+
+    .auth-message.bad{
+      background:#fff1f1;
+      border:1px solid #f0cccc;
+      color:#8a2e2e;
+    }
+
+    .auth-message.info{
+      background:#eef5f7;
+      border:1px solid #cfdee2;
+      color:#245461;
+    }
+
+    .password-hint{
+      font-size:12px;
+      color:#7a8581;
+      font-weight:400;
+    }
+
+    .auth-hidden{
+      display:none !important;
+    }
+
+    @media (max-width:600px){
+      .auth-shell{
+        padding:24px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="mark">M</span>
+    <span>MassageMatch<small>UK</small></span>
+  </a>
+
+  <nav>
+    <a href="search.html">Find a Therapist</a>
+    <a href="pricing.html">For Therapists</a>
+  </nav>
+</header>
+
+
+<main class="auth-page">
+
+  <section class="auth-shell">
+
+    <span class="eyebrow">THERAPIST ACCOUNT</span>
+
+    <h1 id="authTitle">Welcome back.</h1>
+
+    <p id="authIntro">
+      Sign in to manage your MassageMatch profile, photos, treatments and membership.
+    </p>
+
+
+    <div class="auth-tabs" id="authTabs">
+      <button type="button" id="signInTab" class="active">
+        Sign in
+      </button>
+
+      <button type="button" id="signUpTab">
+        Create account
+      </button>
+    </div>
+
+
+    <div id="authMessage" class="auth-message" role="status" aria-live="polite"></div>
+
+
+    <form id="authForm" class="auth-form">
+
+      <label>
+        Email address
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="you@example.com"
+        >
+      </label>
+
+
+      <label id="passwordLabel">
+        Password
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          minlength="8"
+          placeholder="Your password"
+        >
+        <span class="password-hint" id="passwordHint">
+          Use at least 8 characters.
+        </span>
+      </label>
+
+
+      <label id="confirmPasswordLabel" class="auth-hidden">
+        Confirm password
+        <input
+          id="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          minlength="8"
+          placeholder="Repeat your password"
+        >
+      </label>
+
+
+      <button
+        id="authSubmit"
+        class="button auth-action"
+        type="submit"
+      >
+        Sign in
+      </button>
+
+    </form>
+
+
+    <div class="auth-foot" id="normalAuthFoot">
+      <button type="button" class="auth-link" id="forgotPassword">
+        Forgot your password?
+      </button>
+    </div>
+
+
+    <form id="forgotForm" class="auth-form auth-hidden">
+
+      <label>
+        Email address
+        <input
+          id="forgotEmail"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="you@example.com"
+        >
+      </label>
+
+      <button class="button auth-action" type="submit">
+        Send reset email
+      </button>
+
+      <button type="button" class="auth-link" id="backToSignIn">
+        Back to sign in
+      </button>
+
+    </form>
+
+
+    <form id="resetForm" class="auth-form auth-hidden">
+
+      <label>
+        New password
+        <input
+          id="newPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="8"
+          placeholder="New password"
+        >
+      </label>
+
+      <label>
+        Confirm new password
+        <input
+          id="newPasswordConfirm"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="8"
+          placeholder="Repeat new password"
+        >
+      </label>
+
+      <button class="button auth-action" type="submit">
+        Save new password
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  <a class="brand footerbrand" href="index.html">
+    <span class="mark">M</span>
+    <span>MassageMatch<small>UK</small></span>
+  </a>
+
+  <p>
+    Created in Scotland. Built for therapists across the UK.
+  </p>
+
+  <p class="tiny">
+    © 2026 MassageMatch UK
+  </p>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+(async () => {
+
+  const sb =
+    window.mmSupabase;
+
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const requestedMode =
+    params.get('mode') || 'signin';
+
+
+  const rawNext =
+    params.get('next') || 'dashboard.html';
+
+
+  function safeNext(value) {
+
+    const candidate =
+      String(value || '').trim();
+
+
+    if (
+      !candidate ||
+      candidate.startsWith('http://') ||
+      candidate.startsWith('https://') ||
+      candidate.startsWith('//') ||
+      candidate.includes('\\')
+    ) {
+
+      return 'dashboard.html';
+
+    }
+
+
+    return candidate;
+
+  }
+
+
+  const nextPage =
+    safeNext(rawNext);
+
+
+  const authTitle =
+    document.getElementById(
+      'authTitle'
+    );
+
+
+  const authIntro =
+    document.getElementById(
+      'authIntro'
+    );
+
+
+  const authTabs =
+    document.getElementById(
+      'authTabs'
+    );
+
+
+  const signInTab =
+    document.getElementById(
+      'signInTab'
+    );
+
+
+  const signUpTab =
+    document.getElementById(
+      'signUpTab'
+    );
+
+
+  const authForm =
+    document.getElementById(
+      'authForm'
+    );
+
+
+  const authSubmit =
+    document.getElementById(
+      'authSubmit'
+    );
+
+
+  const emailInput =
+    document.getElementById(
+      'email'
+    );
+
+
+  const passwordInput =
+    document.getElementById(
+      'password'
+    );
+
+
+  const confirmPasswordLabel =
+    document.getElementById(
+      'confirmPasswordLabel'
+    );
+
+
+  const confirmPassword =
+    document.getElementById(
+      'confirmPassword'
+    );
+
+
+  const normalAuthFoot =
+    document.getElementById(
+      'normalAuthFoot'
+    );
+
+
+  const forgotPassword =
+    document.getElementById(
+      'forgotPassword'
+    );
+
+
+  const forgotForm =
+    document.getElementById(
+      'forgotForm'
+    );
+
+
+  const forgotEmail =
+    document.getElementById(
+      'forgotEmail'
+    );
+
+
+  const backToSignIn =
+    document.getElementById(
+      'backToSignIn'
+    );
+
+
+  const resetForm =
+    document.getElementById(
+      'resetForm'
+    );
+
+
+  const newPassword =
+    document.getElementById(
+      'newPassword'
+    );
+
+
+  const newPasswordConfirm =
+    document.getElementById(
+      'newPasswordConfirm'
+    );
+
+
+  const message =
+    document.getElementById(
+      'authMessage'
+    );
+
+
+  let mode =
+    requestedMode === 'signup'
+      ? 'signup'
+      : 'signin';
+
+
+  let recoveryMode =
+    requestedMode === 'reset';
+
+
+  function showMessage(
+    text,
+    type = 'info'
+  ) {
+
+    message.textContent =
+      text;
+
+    message.className =
+      `auth-message show ${type}`;
+
+  }
+
+
+  function clearMessage() {
+
+    message.textContent = '';
+
+    message.className =
+      'auth-message';
+
+  }
+
+
+  function showNormalAuth() {
+
+    recoveryMode = false;
+
+    authTabs.classList.remove(
+      'auth-hidden'
+    );
+
+    authForm.classList.remove(
+      'auth-hidden'
+    );
+
+    normalAuthFoot.classList.remove(
+      'auth-hidden'
+    );
+
+    forgotForm.classList.add(
+      'auth-hidden'
+    );
+
+    resetForm.classList.add(
+      'auth-hidden'
+    );
+
+    renderMode();
+
+  }
+
+
+  function renderMode() {
+
+    clearMessage();
+
+    const signingUp =
+      mode === 'signup';
+
+
+    signInTab.classList.toggle(
+      'active',
+      !signingUp
+    );
+
+
+    signUpTab.classList.toggle(
+      'active',
+      signingUp
+    );
+
+
+    confirmPasswordLabel
+      .classList.toggle(
+        'auth-hidden',
+        !signingUp
+      );
+
+
+    confirmPassword.required =
+      signingUp;
+
+
+    passwordInput.autocomplete =
+      signingUp
+        ? 'new-password'
+        : 'current-password';
+
+
+    authSubmit.textContent =
+      signingUp
+        ? 'Create account'
+        : 'Sign in';
+
+
+    authTitle.textContent =
+      signingUp
+        ? 'Create your therapist account.'
+        : 'Welcome back.';
+
+
+    authIntro.textContent =
+      signingUp
+        ? 'Create a secure account before building your MassageMatch profile.'
+        : 'Sign in to manage your MassageMatch profile, photos, treatments and membership.';
+
+  }
+
+
+  signInTab.addEventListener(
+    'click',
+    () => {
+
+      mode = 'signin';
+
+      renderMode();
+
+    }
+  );
+
+
+  signUpTab.addEventListener(
+    'click',
+    () => {
+
+      mode = 'signup';
+
+      renderMode();
+
+    }
+  );
+
+
+  forgotPassword.addEventListener(
+    'click',
+    () => {
+
+      clearMessage();
+
+      authTabs.classList.add(
+        'auth-hidden'
+      );
+
+      authForm.classList.add(
+        'auth-hidden'
+      );
+
+      normalAuthFoot.classList.add(
+        'auth-hidden'
+      );
+
+      forgotForm.classList.remove(
+        'auth-hidden'
+      );
+
+      authTitle.textContent =
+        'Reset your password.';
+
+      authIntro.textContent =
+        'Enter your email address and we’ll send you a secure password reset link.';
+
+      forgotEmail.value =
+        emailInput.value;
+
+    }
+  );
+
+
+  backToSignIn.addEventListener(
+    'click',
+    showNormalAuth
+  );
+
+
+  authForm.addEventListener(
+    'submit',
+    async event => {
+
+      event.preventDefault();
+
+      clearMessage();
+
+
+      if (!sb) {
+
+        showMessage(
+          'MassageMatch could not connect. Please refresh and try again.',
+          'bad'
+        );
+
+        return;
+
+      }
+
+
+      const email =
+        emailInput.value
+          .trim()
+          .toLowerCase();
+
+
+      const password =
+        passwordInput.value;
+
+
+      if (password.length < 8) {
+
+        showMessage(
+          'Please use a password with at least 8 characters.',
+          'bad'
+        );
+
+        return;
+
+      }
+
+
+      authSubmit.disabled =
+        true;
+
+
+      try {
+
+        if (mode === 'signup') {
+
+          if (
+            password !==
+            confirmPassword.value
+          ) {
+
+            throw new Error(
+              'The two passwords do not match.'
+            );
+
+          }
+
+
+          authSubmit.textContent =
+            'Creating account...';
+
+
+          const confirmationUrl =
+            new URL(
+              'login.html',
+              window.location.href
+            );
+
+
+          confirmationUrl.searchParams.set(
+            'confirmed',
+            '1'
+          );
+
+
+          confirmationUrl.searchParams.set(
+            'next',
+            nextPage
+          );
+
+
+          const {
+            data,
+            error
+          } =
+            await sb.auth.signUp({
+              email,
+              password,
+              options: {
+                emailRedirectTo:
+                  confirmationUrl.href
+              }
+            });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          /*
+            With email confirmation enabled,
+            Supabase normally returns a user
+            without an active session.
+          */
+
+          if (!data?.session) {
+
+            showMessage(
+              'Account created. Please check your email and click the confirmation link before continuing.',
+              'good'
+            );
+
+            authForm.reset();
+
+            return;
+
+          }
+
+
+          window.location.href =
+            nextPage;
+
+          return;
+
+        }
+
+
+        authSubmit.textContent =
+          'Signing in...';
+
+
+        const {
+          error
+        } =
+          await sb.auth
+            .signInWithPassword({
+              email,
+              password
+            });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        window.location.href =
+          nextPage;
+
+      }
+      catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          'Something went wrong. Please try again.',
+          'bad'
+        );
+
+      }
+      finally {
+
+        authSubmit.disabled =
+          false;
+
+        authSubmit.textContent =
+          mode === 'signup'
+            ? 'Create account'
+            : 'Sign in';
+
+      }
+
+    }
+  );
+
+
+  forgotForm.addEventListener(
+    'submit',
+    async event => {
+
+      event.preventDefault();
+
+      clearMessage();
+
+
+      if (!sb) {
+
+        showMessage(
+          'MassageMatch could not connect. Please refresh and try again.',
+          'bad'
+        );
+
+        return;
+
+      }
+
+
+      const email =
+        forgotEmail.value
+          .trim()
+          .toLowerCase();
+
+
+      try {
+
+        const resetUrl =
+          new URL(
+            'login.html',
+            window.location.href
+          );
+
+
+        resetUrl.searchParams.set(
+          'mode',
+          'reset'
+        );
+
+
+        const {
+          error
+        } =
+          await sb.auth
+            .resetPasswordForEmail(
+              email,
+              {
+                redirectTo:
+                  resetUrl.href
+              }
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        showMessage(
+          'If that email belongs to a MassageMatch account, a password reset link has been sent.',
+          'good'
+        );
+
+      }
+      catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          'Could not send the reset email. Please try again.',
+          'bad'
+        );
+
+      }
+
+    }
+  );
+
+
+  resetForm.addEventListener(
+    'submit',
+    async event => {
+
+      event.preventDefault();
+
+      clearMessage();
+
+
+      const first =
+        newPassword.value;
+
+
+      const second =
+        newPasswordConfirm.value;
+
+
+      if (first.length < 8) {
+
+        showMessage(
+          'Please use a password with at least 8 characters.',
+          'bad'
+        );
+
+        return;
+
+      }
+
+
+      if (first !== second) {
+
+        showMessage(
+          'The two passwords do not match.',
+          'bad'
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          error
+        } =
+          await sb.auth.updateUser({
+            password: first
+          });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        showMessage(
+          'Your password has been updated. You can now continue to your dashboard.',
+          'good'
+        );
+
+
+        setTimeout(
+          () => {
+            window.location.href =
+              'dashboard.html';
+          },
+          900
+        );
+
+      }
+      catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          'Could not update your password. Please request another reset link.',
+          'bad'
+        );
+
+      }
+
+    }
+  );
+
+
+  if (!sb) {
+
+    showMessage(
+      'MassageMatch could not connect. Please refresh the page.',
+      'bad'
+    );
+
+    return;
+
+  }
+
+
+  sb.auth.onAuthStateChange(
+    (event) => {
+
+      if (
+        event === 'PASSWORD_RECOVERY'
+      ) {
+
+        recoveryMode = true;
+
+        authTabs.classList.add(
+          'auth-hidden'
+        );
+
+        authForm.classList.add(
+          'auth-hidden'
+        );
+
+        normalAuthFoot.classList.add(
+          'auth-hidden'
+        );
+
+        forgotForm.classList.add(
+          'auth-hidden'
+        );
+
+        resetForm.classList.remove(
+          'auth-hidden'
+        );
+
+        authTitle.textContent =
+          'Choose a new password.';
+
+        authIntro.textContent =
+          'Enter a new password for your MassageMatch therapist account.';
+
+        clearMessage();
+
+      }
+
+    }
+  );
+
+
+  if (recoveryMode) {
+
+    authTabs.classList.add(
+      'auth-hidden'
+    );
+
+    authForm.classList.add(
+      'auth-hidden'
+    );
+
+    normalAuthFoot.classList.add(
+      'auth-hidden'
+    );
+
+    forgotForm.classList.add(
+      'auth-hidden'
+    );
+
+    resetForm.classList.remove(
+      'auth-hidden'
+    );
+
+    authTitle.textContent =
+      'Choose a new password.';
+
+    authIntro.textContent =
+      'Enter a new password for your MassageMatch therapist account.';
+
+  }
+  else {
+
+    renderMode();
+
+  }
+
+
+  if (
+    params.get('confirmed') === '1'
+  ) {
+
+    showMessage(
+      'Email confirmed. You can now continue with your MassageMatch account.',
+      'good'
+    );
+
+
+    const {
+      data: { user }
+    } =
+      await sb.auth.getUser();
+
+
+    if (user) {
+
+      setTimeout(
+        () => {
+
+          window.location.href =
+            nextPage;
+
+        },
+        700
+      );
+
+    }
+
+  }
+
+})();
+</script>
+
+</body>
+</html>
