@@ -513,24 +513,29 @@ document
 
 
           const {
-            data: { user },
-            error: userError
+            data: { session },
+            error: sessionError
           } =
-            await sb.auth.getUser();
+            await sb.auth.getSession();
 
 
 
-          if (userError) {
-            throw userError;
+          if (sessionError) {
+            throw sessionError;
           }
+
+
+
+          const user =
+            session?.user || null;
 
 
 
           /*
             NEW THERAPIST
 
-            No logged-in user yet,
-            so start the normal signup flow.
+            No logged-in session yet,
+            so send them to the secure account/signup page.
           */
 
           if (!user) {
@@ -544,7 +549,7 @@ document
                   )}`;
 
               },
-              600
+              300
             );
 
 
