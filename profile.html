@@ -5,7 +5,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>Therapist Profile — MassageMatch UK</title>
+  <title>Therapist Profile | MassageMatch UK</title>
+
+  <meta
+    id="profileMetaDescription"
+    name="description"
+    content="View a MassageMatch UK therapist profile, including treatments, prices, working areas and direct contact details."
+  >
+
+  <meta
+    id="profileRobots"
+    name="robots"
+    content="index,follow,max-image-preview:large"
+  >
+
+  <link id="profileCanonical" rel="canonical">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="MassageMatch UK">
+  <meta id="profileOgTitle" property="og:title" content="Therapist Profile | MassageMatch UK">
+  <meta id="profileOgDescription" property="og:description" content="View treatments, prices, working areas and direct contact details on MassageMatch UK.">
+  <meta id="profileOgUrl" property="og:url" content="https://massagematch.uk/profile.html">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta id="profileTwitterTitle" name="twitter:title" content="Therapist Profile | MassageMatch UK">
+  <meta id="profileTwitterDescription" name="twitter:description" content="View treatments, prices, working areas and direct contact details on MassageMatch UK.">
+
+  <script id="profileStructuredData" type="application/ld+json"></script>
 
   <link rel="stylesheet" href="styles.css">
 
@@ -439,6 +465,10 @@
 
   if (!sb) {
 
+    document
+      .getElementById('profileRobots')
+      ?.setAttribute('content', 'noindex,follow');
+
     loading.innerHTML =
       '<h2>Could not load profile</h2><p>Please return to the therapist search and try again.</p>';
 
@@ -458,6 +488,10 @@
 
 
   if (!userId) {
+
+    document
+      .getElementById('profileRobots')
+      ?.setAttribute('content', 'noindex,follow');
 
     loading.innerHTML =
       '<h2>Therapist not found</h2><p>Please return to the search results and choose a therapist.</p>';
@@ -510,6 +544,10 @@
 
     console.error(error);
 
+    document
+      .getElementById('profileRobots')
+      ?.setAttribute('content', 'noindex,follow');
+
     loading.innerHTML =
       '<h2>Could not load profile</h2><p>Please return to the therapist search and try again.</p>';
 
@@ -520,6 +558,10 @@
 
 
   if (!profile) {
+
+    document
+      .getElementById('profileRobots')
+      ?.setAttribute('content', 'noindex,follow');
 
     loading.innerHTML =
       '<h2>Therapist not found</h2><p>This profile may no longer be available.</p>';
@@ -558,7 +600,7 @@
 
 
   document.title =
-    `${name} — MassageMatch UK`;
+    `${name} in ${location} | MassageMatch UK`;
 
 
   document.getElementById(
@@ -627,6 +669,126 @@
           .data?.publicUrl || ''
       )
       .filter(Boolean);
+
+
+  /*
+    Dynamic Google/social metadata for this individual profile.
+    The public profile URL stays unique to the therapist user id.
+  */
+
+  const canonicalUrl =
+    `https://massagematch.uk/profile.html?user=${encodeURIComponent(userId)}`;
+
+  const treatmentNames =
+    treatments
+      .map(treatment =>
+        String(treatment?.name || '').trim()
+      )
+      .filter(Boolean);
+
+  const treatmentSummary =
+    treatmentNames.length
+      ? ` Offers ${treatmentNames.slice(0, 3).join(', ')}${treatmentNames.length > 3 ? ' and more' : ''}.`
+      : '';
+
+  const metaDescription =
+    `View ${name} in ${location} on MassageMatch UK.${treatmentSummary} See treatments, prices, working areas and direct contact details.`;
+
+  document
+    .getElementById('profileMetaDescription')
+    ?.setAttribute('content', metaDescription);
+
+  document
+    .getElementById('profileCanonical')
+    ?.setAttribute('href', canonicalUrl);
+
+  document
+    .getElementById('profileOgTitle')
+    ?.setAttribute('content', document.title);
+
+  document
+    .getElementById('profileOgDescription')
+    ?.setAttribute('content', metaDescription);
+
+  document
+    .getElementById('profileOgUrl')
+    ?.setAttribute('content', canonicalUrl);
+
+  document
+    .getElementById('profileTwitterTitle')
+    ?.setAttribute('content', document.title);
+
+  document
+    .getElementById('profileTwitterDescription')
+    ?.setAttribute('content', metaDescription);
+
+
+  if (photos[0]) {
+
+    const ogImage =
+      document.createElement('meta');
+
+    ogImage.setAttribute(
+      'property',
+      'og:image'
+    );
+
+    ogImage.setAttribute(
+      'content',
+      photos[0]
+    );
+
+    document.head.appendChild(
+      ogImage
+    );
+
+  }
+
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: canonicalUrl,
+    name: document.title,
+    description: metaDescription,
+    mainEntity: {
+      '@type': 'Person',
+      name,
+      description: about,
+      url: canonicalUrl
+    }
+  };
+
+
+  if (treatmentNames.length) {
+    structuredData.mainEntity.knowsAbout =
+      treatmentNames;
+  }
+
+
+  if (
+    location &&
+    location !== 'Location available from therapist'
+  ) {
+
+    structuredData.mainEntity.workLocation = {
+      '@type': 'Place',
+      name: location
+    };
+
+  }
+
+
+  if (photos[0]) {
+    structuredData.mainEntity.image =
+      photos[0];
+  }
+
+
+  document
+    .getElementById('profileStructuredData')
+    .textContent =
+      JSON.stringify(structuredData);
 
 
   if (photos.length) {
