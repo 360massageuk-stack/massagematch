@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://massagematch.uk/</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/search.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/treatments.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/pricing.html</loc>
   </url>
@@ -16,32 +20,49 @@
   <url>
     <loc>https://massagematch.uk/massage-therapists-edinburgh.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/massage-therapists-glasgow.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/massage-therapists-aberdeen.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/massage-therapists-dundee.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/massage-therapists-inverness.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/massage-therapists-stirling.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/massage-therapists-perth.html</loc>
   </url>
 
   <url>
+    <loc>https://massagematch.uk/massage-therapists-dunfermline.html</loc>
+  </url>
+
+  <url>
+    <loc>https://massagematch.uk/massage-therapists-falkirk.html</loc>
+  </url>
+
+  <url>
     <loc>https://massagematch.uk/sports-massage.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/deep-tissue-massage.html</loc>
   </url>
+
   <url>
     <loc>https://massagematch.uk/relaxation-massage.html</loc>
   </url>
+
 </urlset>
