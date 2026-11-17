@@ -49,6 +49,17 @@
   </script>
 
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* MassageMatch city directory: styles are scoped to the new section. */
+    .city-directory { max-width: 1060px; margin: 48px auto 0; text-align: left; }
+    .city-directory h3 { margin: 10px 0; font-size: clamp(24px, 3vw, 32px); }
+    .city-directory p { margin: 0 0 22px; color: #627875; }
+    .city-directory-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(155px,1fr)); gap: 12px; }
+    .city-directory-grid a { display: block; padding: 13px 15px; border: 1px solid #d5e5df; border-radius: 10px; background: #fff; color: #287d78; font-weight: 750; text-decoration: none; }
+    .city-directory-grid a:hover, .city-directory-grid a:focus-visible { border-color: #287d78; background: #edf7f4; text-decoration: underline; }
+    @media(max-width: 520px) { .city-directory { margin-top: 35px; } .city-directory-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; } .city-directory-grid a { padding: 12px 10px; font-size: 14px; } }
+  </style>
+
 </head>
 
 
@@ -476,22 +487,35 @@
       Browse live profiles
     </a>
 
-    <p style="margin:18px 0 0;font-size:14px;color:#627875;">
-      Popular locations:
-      <a
-        href="massage-therapists-edinburgh.html"
-        style="font-weight:800;color:#287d78;"
-      >
-        Edinburgh
-      </a>
-      &nbsp;·&nbsp;
-      <a
-        href="massage-therapists-glasgow.html"
-        style="font-weight:800;color:#287d78;"
-      >
-        Glasgow
-      </a>
-    </p>
+    <div class="city-directory" aria-labelledby="city-directory-title">
+      <span class="eyebrow">EXPLORE SCOTLAND</span>
+      <h3 id="city-directory-title">Find massage therapists by location</h3>
+      <p>Choose a town or city to explore local treatments and search independent therapist profiles.</p>
+      <div class="city-directory-grid">
+        <a href="massage-therapists-aberdeen.html">Aberdeen</a>
+        <a href="massage-therapists-airdrie.html">Airdrie</a>
+        <a href="massage-therapists-ayr.html">Ayr</a>
+        <a href="massage-therapists-coatbridge.html">Coatbridge</a>
+        <a href="massage-therapists-cumbernauld.html">Cumbernauld</a>
+        <a href="massage-therapists-dundee.html">Dundee</a>
+        <a href="massage-therapists-dunfermline.html">Dunfermline</a>
+        <a href="massage-therapists-east-kilbride.html">East Kilbride</a>
+        <a href="massage-therapists-edinburgh.html">Edinburgh</a>
+        <a href="massage-therapists-falkirk.html">Falkirk</a>
+        <a href="massage-therapists-glasgow.html">Glasgow</a>
+        <a href="massage-therapists-glenrothes.html">Glenrothes</a>
+        <a href="massage-therapists-hamilton.html">Hamilton</a>
+        <a href="massage-therapists-inverness.html">Inverness</a>
+        <a href="massage-therapists-kilmarnock.html">Kilmarnock</a>
+        <a href="massage-therapists-kirkcaldy.html">Kirkcaldy</a>
+        <a href="massage-therapists-livingston.html">Livingston</a>
+        <a href="massage-therapists-motherwell.html">Motherwell</a>
+        <a href="massage-therapists-paisley.html">Paisley</a>
+        <a href="massage-therapists-perth.html">Perth</a>
+        <a href="massage-therapists-stirling.html">Stirling</a>
+      </div>
+    </div>
+
 
   </div>
 
