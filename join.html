@@ -1,4 +1,59 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Build Your Therapist Profile | MassageMatch UK</title><meta name="description" content="Create your MassageMatch UK therapist profile, add treatments, prices, photos and practice details, and preview your listing before publication."><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://massagematch.uk/join.html"><meta property="og:type" content="website"><meta property="og:site_name" content="MassageMatch UK"><meta property="og:title" content="Build Your Therapist Profile | MassageMatch UK"><meta property="og:description" content="Create your MassageMatch UK therapist profile, add treatments, prices, photos and practice details, and preview your listing before publication."><meta property="og:url" content="https://massagematch.uk/join.html"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Build Your Therapist Profile | MassageMatch UK"><meta name="twitter:description" content="Create your MassageMatch UK therapist profile, add treatments, prices, photos and practice details, and preview your listing before publication."><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="join.css"></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Build Your Therapist Profile | MassageMatch UK</title><meta name="description" content="Create your MassageMatch UK therapist profile, add treatments, prices, photos and practice details, and preview your listing before publication."><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://massagematch.uk/join.html"><meta property="og:type" content="website"><meta property="og:site_name" content="MassageMatch UK"><meta property="og:title" content="Build Your Therapist Profile | MassageMatch UK"><meta property="og:description" content="Create your MassageMatch UK therapist profile, add treatments, prices, photos and practice details, and preview your listing before publication."><meta property="og:url" content="https://massagematch.uk/join.html"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Build Your Therapist Profile | MassageMatch UK"><meta name="twitter:description" content="Create your MassageMatch UK therapist profile, add treatments, prices, photos and practice details, and preview your listing before publication."><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="join.css">
+
+<style>
+/* MassageMatch profile preview: photo remains square, even with long biographies
+   and treatment menus. This affects only Step 4 of join.html. */
+#therapistBuilder .mini-profile {
+  display: grid;
+  grid-template-columns: minmax(160px, 230px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+#therapistBuilder .mini-profile > div:nth-child(2) {
+  min-width: 0;
+}
+#therapistBuilder #pvPhoto.mini-photo {
+  display: block;
+  position: relative;
+  align-self: start;
+  justify-self: start;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  background-color: #edf2ef;
+  background-image: none;
+  background-size: contain !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  border-radius: 14px;
+  overflow: hidden;
+}
+#therapistBuilder #pvPhoto.mini-photo > span {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  top: auto;
+  margin: 0;
+  z-index: 1;
+}
+#therapistBuilder #pvAbout {
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+@media (max-width: 700px) {
+  #therapistBuilder .mini-profile {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  #therapistBuilder #pvPhoto.mini-photo {
+    max-width: 260px;
+  }
+}
+</style>
+</head><body>
 <header class="site-header"><a class="brand" href="index.html">MassageMatch <span>UK</span></a><nav><a href="search.html">Find a Therapist</a><a href="treatments.html">Treatments</a><a href="index.html#about">About</a><a href="pricing.html">Membership</a><a href="dashboard.html">Dashboard</a></nav></header>
 <main class="onboard-page"><section class="onboard-intro"><p class="eyebrow">FOUNDING THERAPISTS · FIRST 2 MONTHS FREE</p><h1>Build a profile that does your work justice.</h1><p>Tell clients what you do, where you work and what makes your practice different. Preview everything before saving your profile.</p><div class="step-track"><span class="active">1</span><i></i><span>2</span><i></i><span>3</span><i></i><span>4</span></div><div class="step-labels"><b>About you</b><b>Treatments</b><b>Practice</b><b>Preview</b></div></section>
 <section class="builder-shell"><form id="therapistBuilder" class="builder-form">
@@ -47,7 +102,7 @@
 <div id="selectedTreatments" class="selected-treatments"><div class="empty-menu">No treatments added yet.</div></div>
 </div>
 <div class="build-step"><p class="eyebrow">STEP 3 OF 4</p><h2>Your practice.</h2><p class="muted">Help clients understand where you work and how they can contact you.</p><div class="choice-grid"><label><input type="checkbox" name="setting" value="Treatment room"><span>Treatment room</span></label><label><input type="checkbox" name="setting" value="Mobile visits"><span>Mobile visits</span></label><label><input type="checkbox" name="setting" value="Home studio"><span>Home studio</span></label><label><input type="checkbox" name="setting" value="Sports setting"><span>Sports setting</span></label></div><div id="mobileAreas" class="mobile-areas" hidden><label>Mobile areas covered <small>Where will you travel?</small><textarea name="areas" rows="3" placeholder="e.g. South Edinburgh, Leith, Musselburgh, EH8, EH9..."></textarea></label><p class="muted small-note">Add towns, neighbourhoods or postcode areas so clients know whether you can travel to them.</p></div><div class="field-grid"><label>Phone<input name="phone" placeholder="07..."></label><label>Email<input name="email" type="email" placeholder="you@example.com"></label><label>Website <small>Optional</small><input name="website" placeholder="yourwebsite.co.uk"></label></div><label class="tickline"><input type="checkbox" name="insured"> I confirm I hold appropriate professional insurance.</label><label class="tickline"><input type="checkbox" name="rules"> I agree that MassageMatch is for legitimate professional massage services.</label></div>
-<div class="build-step"><p class="eyebrow">STEP 4 OF 4</p><h2>Here's how your profile is shaping up.</h2><p class="muted">Check the important details before saving your profile.</p><div class="mini-profile"><div id="pvPhoto" class="mini-photo" style="background-image:url('assets/sarah.jpg')"><span>MAIN PHOTO</span></div><div><span class="verified">REVIEWED PROFILE</span><h2 id="pvName">Your name</h2><p id="pvPlace">Your location</p><div id="pvTreatments" class="tag-row"></div><p id="pvAbout">Your introduction will appear here.</p><div id="pvBadges" class="profile-badges"></div><p id="pvPractice" class="practice-preview" hidden></p><div id="pvMenu" class="profile-menu"></div><b id="pvPrice"></b><div id="pvContact" class="profile-contact" hidden><strong>Contact therapist</strong><div id="pvContactLinks"></div></div></div></div><div class="review-note"><b>Human review, not a mystery rejection.</b><p>Profiles may be reviewed before publication. If something needs changing, we'll tell you what and give you the chance to fix it.</p></div></div>
+<div class="build-step"><p class="eyebrow">STEP 4 OF 4</p><h2>Here's how your profile is shaping up.</h2><p class="muted">Check the important details before saving your profile.</p><div class="mini-profile"><div id="pvPhoto" class="mini-photo" style="background-image:none"><span>MAIN PHOTO</span></div><div><span class="verified">PROFILE PREVIEW</span><h2 id="pvName">Your name</h2><p id="pvPlace">Your location</p><div id="pvTreatments" class="tag-row"></div><p id="pvAbout">Your introduction will appear here.</p><div id="pvBadges" class="profile-badges"></div><p id="pvPractice" class="practice-preview" hidden></p><div id="pvMenu" class="profile-menu"></div><b id="pvPrice"></b><div id="pvContact" class="profile-contact" hidden><strong>Contact therapist</strong><div id="pvContactLinks"></div></div></div></div><div class="review-note"><b>Human review, not a mystery rejection.</b><p>Profiles may be reviewed before publication. If something needs changing, we'll tell you what and give you the chance to fix it.</p></div></div>
 <div class="builder-actions"><button type="button" class="back-btn" id="backStep">Back</button><span>Draft saved on this device</span><button type="button" class="primary-btn" id="nextStep">Continue</button></div></form>
 <aside class="builder-help"><span class="eyebrow">WHY MASSAGEMATCH?</span><h3>Made for massage therapists.</h3><p>No cars. No sofas. No confusing classified categories. Your work gets a proper home.</p><hr><b>✓ First 2 months free</b><b>✓ No commission on clients</b><b>✓ Clear profile rules</b><b>✓ Human review</b><b>✓ Contact clients directly</b><div class="founder-mini">Created in Scotland by a working massage therapist.</div></aside></section></main>
 <footer><div><b>MassageMatch UK</b><p>Created by a therapist. Built for therapists.</p></div><p>Connecting clients with independent therapists across the UK.</p></footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
