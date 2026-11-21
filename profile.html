@@ -145,10 +145,42 @@
 .mm-list-toggle:focus-visible { background: #eef8f5; outline-offset: 2px; }
 #profilePrices.mm-compact-prices { display: block; }
 #profilePrices.mm-compact-prices > div { min-width: 0; }
-.mm-price-summary { padding: 18px; border-radius: 16px; background: #edf7f4; margin: 0 0 24px; }
-.mm-price-label { margin: 0 0 12px; font-weight: 700; color: #2b625e; }
-.mm-price-note { color: #526c69; font-size: 14px; margin: 12px 0 0; }
-.mm-session-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+/* Override the generic .price-list > div layout for the pricing summary only. */
+#profilePrices.mm-compact-prices > .mm-price-summary {
+  display: block !important;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 18px;
+  border-radius: 16px;
+  background: #edf7f4;
+  margin: 0 0 24px;
+}
+#profilePrices .mm-price-summary > .mm-price-label {
+  display: block !important;
+  width: 100%;
+  margin: 0 0 14px;
+  font-weight: 700;
+  color: #2b625e;
+}
+#profilePrices .mm-price-summary > .mm-price-note {
+  display: block !important;
+  width: 100%;
+  color: #526c69;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 14px 0 0;
+}
+#profilePrices .mm-price-summary > .mm-session-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  min-width: 0;
+}
 .mm-session-card { background: #fff; border: 1px solid #d4e4df; padding: 15px 9px; border-radius: 12px; text-align: center; }
 .mm-session-card span { display: block; color: #58716e; font-size: 13px; }
 .mm-session-card strong { display: block; color: #143c38; font-size: clamp(19px, 3.5vw, 28px); margin-top: 3px; }
